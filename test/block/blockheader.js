@@ -1,5 +1,8 @@
 import path from 'path'
 import pqccore from '../../lib'
+import Block from '../../lib/block/block'
+
+const {Transaction, Script} = pqccore
 const {BN} = pqccore.crypto
 const {BufferReader, BufferWriter} = pqccore.encoding
 const {BlockHeader} = pqccore
@@ -265,5 +268,20 @@ describe('BlockHeader', () => {
   it('coverage: caches the "_id" property', () => {
     const blockHeader = BlockHeader.fromRawBlock(dataRawBlockBuffer);
     blockHeader.id.should.equal(blockHeader.id);
+  });
+
+  it('should create genesis block', function () {
+    const coinbase = '2018-02-26 PQC genesis block created.'
+    const tx = new Transaction().from({
+      txId: '0000000000000000000000000000000000000000000000000000000000000000',
+      outputIndex: 0,
+      script: Script.buildPublicKeyHashIn(),
+      glv: 50 * 1e8
+    }).to('GSJ6kv8dkAwknDKUajg6WQ85r49R4dSFB3', 50 * 1e8)
+
+    const header = new BlockHeader({
+      
+    })
+    const block = new Block()
   });
 });
