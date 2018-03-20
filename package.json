@@ -1,6 +1,6 @@
 {
   "name": "pqc-core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/es/index.js",
   "scripts": {
@@ -35,6 +35,7 @@
   "dependencies": {
     "base-x": "^3.0.4",
     "bn.js": "^4.11.8",
+    "buffer-compare": "^1.1.1",
     "cubehash": "^1.1.0",
     "lodash": "^4.17.4",
     "tweetnacl": "^1.0.0",
