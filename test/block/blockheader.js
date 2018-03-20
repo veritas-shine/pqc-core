@@ -270,18 +270,18 @@ describe('BlockHeader', () => {
     blockHeader.id.should.equal(blockHeader.id);
   });
 
-  it('should create genesis block', function () {
-    const coinbase = '2018-02-26 PQC genesis block created.'
-    const tx = new Transaction().from({
-      txId: '0000000000000000000000000000000000000000000000000000000000000000',
-      outputIndex: 0,
-      script: Script.buildPublicKeyHashIn(),
-      glv: 50 * 1e8
-    }).to('GSJ6kv8dkAwknDKUajg6WQ85r49R4dSFB3', 50 * 1e8)
-
-    const header = new BlockHeader({
-      
-    })
-    const block = new Block()
-  });
+  // it('should create genesis block', function () {
+  //   const coinbase = '2018-02-26 PQC genesis block created.'
+  //   const tx = new Transaction().from({
+  //     txId: '0000000000000000000000000000000000000000000000000000000000000000',
+  //     outputIndex: 0,
+  //     script: Script.buildPublicKeyHashIn(),
+  //     glv: 50 * 1e8
+  //   }).to('GSJ6kv8dkAwknDKUajg6WQ85r49R4dSFB3', 50 * 1e8)
+  //
+  //   const header = new BlockHeader({
+  //
+  //   })
+  //   const block = new Block()
+  // });
 });

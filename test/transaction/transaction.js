@@ -120,7 +120,7 @@ describe('Transaction', () => {
   });
 
   it('fromObject with pay-to-public-key previous outputs', () => {
-    const tx = bitcore.Transaction({
+    const tx = pqccore.Transaction({
       hash: '132856bf03d6415562a556437d22ac63c37a4595fd986c796eb8e02dc031aa25',
       version: 1,
       inputs: [
@@ -148,7 +148,7 @@ describe('Transaction', () => {
       ],
       nLockTime: 139
     });
-    tx.inputs[0].should.be.instanceof(bitcore.Transaction.Input.PublicKey);
+    tx.inputs[0].should.be.instanceof(pqccore.Transaction.Input.PublicKey);
     tx.inputs[0].output.glv.should.equal(5000000000);
     tx.inputs[0].output.script.toHex().should.equal('2103b1c65d65f1ff3fe145a4ede692460ae0606671d04e8449e99dd11c66ab55a7feac');
   });
@@ -595,7 +595,7 @@ describe('Transaction', () => {
           .to(toAddress, 10000)
           .change(changeAddress);
       }, 'disableIsFullySigned', errors.Transaction.MissingSignatures));
-      it('can skip the check that avoids spending more bitcoins than the inputs for a transaction', buildSkipTest((transaction) => {
+      it('can skip the check that avoids spending more PQCCoin than the inputs for a transaction', buildSkipTest((transaction) => {
         return transaction
           .to(toAddress, 10000000000000)
           .change(changeAddress)
@@ -763,7 +763,7 @@ describe('Transaction', () => {
         outputIndex: 0,
         script: new Script()
       }), outputScriptString, 10000);
-      transaction.inputs[0].output.script.should.be.instanceof(bitcore.Script);
+      transaction.inputs[0].output.script.should.be.instanceof(pqccore.Script);
       transaction.inputs[0].output.script.toString().should.equal(outputScriptString);
     });
   });
@@ -1087,7 +1087,7 @@ describe('Transaction', () => {
       tx.outputs[2].script.toString().should.equal('0x01');
     });
 
-    describe('bitcoinjs fixtures', () => {
+    describe('PQCCoin fixtures', () => {
       const fixture = require('../data/bip69.json');
 
       // returns index-based order of sorted against original

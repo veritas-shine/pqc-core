@@ -8,7 +8,7 @@ const {Script, Transaction, errors, PrivateKey} = pqccore
 const TransactionSignature = Transaction.Signature
 
 describe('TransactionSignature', () => {
-  const fromAddress = 'GfJ7sr9k9razCx2C1TVm99GhWcjEkoQvKx';
+  const fromAddress = 'GdfFXrooGxR6Hfg77wpEcXE6EBvinoWdex';
   const privateKey = '2SRLnpdFnpiqzeAbJXSBoLeCvG65m7ham4N7ZuFuSgRSAmAVQwKDVrJnui3gY4Ywv7ZFVeW5QuFC4oakVAxetMxGVnvEyct';
   const simpleUtxoWith100000Satoshis = {
     address: fromAddress,

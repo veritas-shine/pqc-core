@@ -1,6 +1,6 @@
 {
   "name": "pqc-core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "dist/es/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "prebuild:es": "rimraf dist/es",
     "prepublish": "cross-env NODE_ENV=production npm run build",
     "test-block": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block/*.js",
-    "test-script": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/script/interpreter.js",
+    "test-script": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/script/script.js",
     "test-transaction": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction/*.js",
     "test-transaction-input": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction/input/*.js",
     "test-base": "npm run test-other && npm run test-crypto && npm run test-encoding && npm run test-util",
@@ -35,9 +35,8 @@
   "dependencies": {
     "base-x": "^3.0.4",
     "bn.js": "^4.11.8",
-    "cubehash": "^1.0.0",
+    "cubehash": "^1.1.0",
     "lodash": "^4.17.4",
-    "ntrujs": "https://github.com/veritas-shine/ntrujs/tarball/dist",
     "tweetnacl": "^1.0.0",
     "xmss": "0.0.11"
   },
