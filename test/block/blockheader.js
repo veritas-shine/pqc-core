@@ -12,7 +12,7 @@ const should = require('chai').should();
 // https://test-insight.bitpay.com/block/000000000b99b16390660d79fcc138d2ad0c89a0d044c4201a02bdf1f61ffa11
 const dataRawBlockBuffer = fs.readFileSync(path.join(__dirname, '../data/blk86756-testnet.dat'));
 const dataRawBlockBinary = fs.readFileSync(path.join(__dirname, '../data/blk86756-testnet.dat'), 'binary');
-const dataRawId = '000000000b99b16390660d79fcc138d2ad0c89a0d044c4201a02bdf1f61ffa11';
+const dataRawId = '68beb6264cb089315e6c8e571ab3bc4b897096da0bbbcb30502827abd1ed43cc';
 const data = require('../data/blk86756-testnet');
 
 describe('BlockHeader', () => {
@@ -64,7 +64,7 @@ describe('BlockHeader', () => {
     it('will throw an error if the argument object hash property doesn\'t match', () => {
       (function () {
         const bh = new BlockHeader({
-          hash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
+          hash: '282d9317a7053d7c43d478eeec787207e03b8cd49b1684401df6cf8a2ded00a0',
           version,
           prevHash: prevblockidbuf,
           merkleRoot: merklerootbuf,
