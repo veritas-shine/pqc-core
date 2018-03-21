@@ -8,7 +8,7 @@ describe('PrivateKey', () => {
   const wifHex = '9076537d384f48189193c1643a26a26fb7a99f73259e960f407eb83ce80bef8dbff48a7cadb51d29a13b6b72ac37a8cf71e72a6fd8c868c6a98cc95ea0b794a87a';
   const wifLiveNet = '2SRLnpdFnpiqzeAbJXSBoLeCvG65m7ham4N7ZuFuSgRSAmAVQwKDVrJnui3gY4Ywv7ZFVeW5QuFC4oakVAxetMxGVnvEyct';
   const buf = Buffer.from(wifHex, 'hex');
-  const publicKeyHex = '04401d387c718f5fe144dd094400ef6a58e8c83023f6bd3e7ab48296e88f91b4ebaf7a4621ed9cdd9be0e3e0a8383580c4ecb25f0f0238637bb8101e97d4ec5054fc1d387c718f5fe144dd094400ef6a58e8c83023f6bd3e7ab48296e88f91b4ebaf7a4621ed9cdd9be0e3e0a8383580c4ecb25f0f0238637bb8101e97d4ec5054fc'
+  const publicKeyHex = '04401d387c718f5fe144dd094400ef6a58e8c83023f6bd3e7ab48296e88f91b4ebaf7a4621ed9cdd9be0e3e0a8383580c4ecb25f0f0238637bb8101e97d4ec5054fc'
 
   it('should create private key from buffer', function() {
     this.timeout(20 * 1000)

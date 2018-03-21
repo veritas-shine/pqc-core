@@ -20,7 +20,7 @@ describe('MultiSigScriptHashInput', () => {
   const public1 = privateKey1.publicKey;
   const public2 = privateKey2.publicKey;
   const public3 = privateKey3.publicKey;
-  const address = new Address('BRdYM6Yqfg54YQMwUDMGnTHFuYpwnUPYeR');
+  const address = new Address('BTcFSKeL9QVfJPaVMTjigMDGHdMj5dwAz7');
 
   const output = {
     address: 'B4oLsYX5n4urZfMtkYxMjPgjpzpsg9G9yG',
@@ -30,7 +30,7 @@ describe('MultiSigScriptHashInput', () => {
     glv: 1000000
   };
   const add = Address.createMultisig([public1, public2, public3], 2, 'testnet')
-  console.log(36, add.toString())
+  console.log(33, add.toString())
 
   it('can count missing signatures', function() {
     this.timeout(20 * 1000)

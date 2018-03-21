@@ -146,7 +146,8 @@ describe('MerkleBlock', () => {
     it('should find transactions via Transaction object', () => {
       const jsonData = data.JSON[0];
       const txBuf = Buffer.from(data.TXHEX[0][0], 'hex');
-      const tx = new Transaction().fromBuffer(txBuf);
+      const tx = new Transaction().fromBuffer(txBuf)
+      console.log(150, tx.id)
       const b = new MerkleBlock(jsonData);
       b.hasTransaction(tx).should.equal(true);
     });
@@ -155,6 +156,7 @@ describe('MerkleBlock', () => {
       // Reuse another transaction already in data/ dir
       const serialized = transactionVector[0][7];
       const tx = new Transaction().fromBuffer(Buffer.from(serialized, 'hex'));
+      console.log(159, tx)
       const b = new MerkleBlock(data.JSON[0]);
       b.hasTransaction(tx).should.equal(false);
     });

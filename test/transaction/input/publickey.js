@@ -10,8 +10,8 @@ describe('PublicKeyInput', () => {
   const utxo = {
     txid: '7f3b688cb224ed83e12d9454145c26ac913687086a0a62f2ae0bc10934a4030f',
     vout: 0,
-    address: 'GdfFXrooGxR6Hfg77wpEcXE6EBvinoWdex',
-    scriptPubKey: '76a914d95de5bb861c555c4680a37607cd5d573492a81988ac',
+    address: 'Gb45hMKzxfgKdSTi6kn133WrS7Hre3evBk',
+    scriptPubKey: '76a914bcc6e04e161e5a9b837328f7f8bee4157bb95f5888ac',
     amount: 50,
     confirmations: 104,
     spendable: true
@@ -21,7 +21,7 @@ describe('PublicKeyInput', () => {
   utxo.address.should.equal(address.toString());
 
   const destKey = new PrivateKey();
-  const fromAddress = new Address('GdfFXrooGxR6Hfg77wpEcXE6EBvinoWdex')
+  const fromAddress = new Address('Gb45hMKzxfgKdSTi6kn133WrS7Hre3evBk')
   const scriptPubkey = Script.buildPublicKeyHashOut(fromAddress)
   console.log(26, scriptPubkey.toHex())
 
