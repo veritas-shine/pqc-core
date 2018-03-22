@@ -4,11 +4,6 @@ var assert = require('assert')
 var bigi = require('bigi')
 var bitcoin = require('../../')
 
-var ecurve = require('ecurve')
-var secp256k1 = ecurve.getCurveByName('secp256k1')
-var G = secp256k1.G
-var n = secp256k1.n
-
 // vG = (dG \+ sha256(e * dG)G)
 function stealthSend (e, Q) {
   var eQ = Q.multiply(e) // shared secret

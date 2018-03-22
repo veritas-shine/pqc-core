@@ -20,7 +20,7 @@ var BigInt = typeforce.quacksLike('BigInteger')
 var ECPoint = typeforce.quacksLike('Point')
 
 // exposed, external API
-var ECSignature = typeforce.compile({ r: BigInt, s: BigInt })
+var Signature = typeforce.compile({ r: BigInt, s: BigInt })
 var Network = typeforce.compile({
   messagePrefix: typeforce.oneOf(typeforce.Buffer, typeforce.String),
   bip32: {
@@ -38,7 +38,7 @@ var types = {
   BIP32Path: BIP32Path,
   Buffer256bit: typeforce.BufferN(32),
   ECPoint: ECPoint,
-  ECSignature: ECSignature,
+  Signature: Signature,
   Hash160bit: typeforce.BufferN(20),
   Hash256bit: typeforce.BufferN(32),
   Network: Network,

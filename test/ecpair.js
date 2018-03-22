@@ -2,8 +2,6 @@
 /* eslint-disable no-new */
 
 var assert = require('assert')
-var ecdsa = require('../src/ecdsa')
-var ecurve = require('ecurve')
 var proxyquire = require('proxyquire')
 var hoodwink = require('hoodwink')
 
@@ -11,7 +9,6 @@ var BigInteger = require('bigi')
 var ECPair = require('../src/ecpair')
 
 var fixtures = require('./fixtures/ecpair.json')
-var curve = ecdsa.__curve
 
 var NETWORKS = require('../src/networks')
 var NETWORKS_LIST = [] // Object.values(NETWORKS)
@@ -52,17 +49,6 @@ describe('ECPair', function () {
         })
 
         assert.strictEqual(keyPair.getPublicKeyBuffer().toString('hex'), f.Q)
-      })
-    })
-
-    fixtures.invalid.constructor.forEach(function (f) {
-      it('throws ' + f.exception, function () {
-        var d = f.d && new BigInteger(f.d)
-        var Q = f.Q && ecurve.Point.decodeFrom(curve, Buffer.from(f.Q, 'hex'))
-
-        assert.throws(function () {
-          new ECPair(d, Q, f.options)
-        }, new RegExp(f.exception))
       })
     })
   })
@@ -184,16 +170,6 @@ describe('ECPair', function () {
 
       ECPair.makeRandom({ rng: rng })
     }))
-
-    it('loops until d is within interval [1, n - 1] : n - 1', hoodwink(function () {
-      var rng = this.stub(function f () {
-        if (f.calls === 0) return BigInteger.ZERO.toBuffer(32) // <1
-        if (f.calls === 1) return curve.n.toBuffer(32) // >n-1
-        return curve.n.subtract(BigInteger.ONE).toBuffer(32) // n-1
-      }, 3)
-
-      ECPair.makeRandom({ rng: rng })
-    }))
   })
 
   describe('getAddress', function () {
@@ -226,40 +202,11 @@ describe('ECPair', function () {
     })
 
     describe('signing', function () {
-      it('wraps ecdsa.sign', hoodwink(function () {
-        this.mock(ecdsa, 'sign', function (h, d) {
-          assert.strictEqual(h, hash)
-          assert.strictEqual(d, keyPair.d)
-        }, 1)
-
-        keyPair.sign(hash)
-      }))
-
-      it('throws if no private key is found', function () {
-        keyPair.d = null
-
-        assert.throws(function () {
-          keyPair.sign(hash)
-        }, /Missing private key/)
-      })
+      // TODO
     })
 
     describe('verify', function () {
-      var signature
-
-      beforeEach(function () {
-        signature = keyPair.sign(hash)
-      })
-
-      it('wraps ecdsa.verify', hoodwink(function () {
-        this.mock(ecdsa, 'verify', function (h, s, q) {
-          assert.strictEqual(h, hash)
-          assert.strictEqual(s, signature)
-          assert.strictEqual(q, keyPair.Q)
-        }, 1)
-
-        keyPair.verify(hash, signature)
-      }))
+      // TODO
     })
   })
 })

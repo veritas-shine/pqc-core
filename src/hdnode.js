@@ -9,9 +9,6 @@ var NETWORKS = require('./networks')
 var BigInteger = require('bigi')
 var ECPair = require('./ecpair')
 
-var ecurve = require('ecurve')
-var curve = ecurve.getCurveByName('secp256k1')
-
 function HDNode (keyPair, chainCode) {
   typeforce(types.tuple('ECPair', types.Buffer256bit), arguments)
 
@@ -104,12 +101,7 @@ HDNode.fromBase58 = function (string, networks) {
 
   // 33 bytes: public key data (0x02 + X or 0x03 + X)
   } else {
-    var Q = ecurve.Point.decodeFrom(curve, buffer.slice(45, 78))
-    // Q.compressed is assumed, if somehow this assumption is broken, `new HDNode` will throw
-
-    // Verify that the X coordinate in the public point corresponds to a point on the curve.
-    // If not, the extended public key is invalid.
-    curve.validate(Q)
+    // TODO
 
     keyPair = new ECPair(null, Q, { network: network })
   }
@@ -231,11 +223,6 @@ HDNode.prototype.derive = function (index) {
   var IR = I.slice(32)
 
   var pIL = BigInteger.fromBuffer(IL)
-
-  // In case parse256(IL) >= n, proceed with the next value for i
-  if (pIL.compareTo(curve.n) >= 0) {
-    return this.derive(index + 1)
-  }
 
   // Private parent key -> private child key
   var derivedKeyPair

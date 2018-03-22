@@ -43,7 +43,8 @@
     "supersphincs": "^6.0.6",
     "typeforce": "^1.11.3",
     "varuint-bitcoin": "^1.0.4",
-    "wif": "^2.0.1"
+    "wif": "^2.0.1",
+    "xmss": "0.0.11"
   },
   "devDependencies": {
     "bip39": "^2.3.0",

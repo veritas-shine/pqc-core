@@ -3,15 +3,15 @@
 var assert = require('assert')
 
 var BigInteger = require('bigi')
-var ECSignature = require('../src/ecsignature')
+var Signature = require('../src/signature')
 
 var fixtures = require('./fixtures/ecsignature.json')
 
-describe('ECSignature', function () {
+describe('Signature', function () {
   describe('toCompact', function () {
     fixtures.valid.forEach(function (f) {
       it('exports ' + f.compact.hex + ' correctly', function () {
-        var signature = new ECSignature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
+        var signature = new Signature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
 
         var buffer = signature.toCompact(f.compact.i, f.compact.compressed)
         assert.strictEqual(buffer.toString('hex'), f.compact.hex)
@@ -23,7 +23,7 @@ describe('ECSignature', function () {
     fixtures.valid.forEach(function (f) {
       it('imports ' + f.compact.hex + ' correctly', function () {
         var buffer = Buffer.from(f.compact.hex, 'hex')
-        var parsed = ECSignature.parseCompact(buffer)
+        var parsed = Signature.parseCompact(buffer)
 
         assert.strictEqual(parsed.compressed, f.compact.compressed)
         assert.strictEqual(parsed.i, f.compact.i)
@@ -37,7 +37,7 @@ describe('ECSignature', function () {
         var buffer = Buffer.from(f.hex, 'hex')
 
         assert.throws(function () {
-          ECSignature.parseCompact(buffer)
+          Signature.parseCompact(buffer)
         }, new RegExp(f.exception))
       })
     })
@@ -46,7 +46,7 @@ describe('ECSignature', function () {
   describe('toDER', function () {
     fixtures.valid.forEach(function (f) {
       it('exports ' + f.DER + ' correctly', function () {
-        var signature = new ECSignature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
+        var signature = new Signature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
 
         var DER = signature.toDER()
         assert.strictEqual(DER.toString('hex'), f.DER)
@@ -58,7 +58,7 @@ describe('ECSignature', function () {
     fixtures.valid.forEach(function (f) {
       it('imports ' + f.DER + ' correctly', function () {
         var buffer = Buffer.from(f.DER, 'hex')
-        var signature = ECSignature.fromDER(buffer)
+        var signature = Signature.fromDER(buffer)
 
         assert.strictEqual(signature.r.toString(), f.signature.r)
         assert.strictEqual(signature.s.toString(), f.signature.s)
@@ -70,7 +70,7 @@ describe('ECSignature', function () {
         var buffer = Buffer.from(f.hex, 'hex')
 
         assert.throws(function () {
-          ECSignature.fromDER(buffer)
+          Signature.fromDER(buffer)
         }, new RegExp(f.exception))
       })
     })
@@ -79,7 +79,7 @@ describe('ECSignature', function () {
   describe('toScriptSignature', function () {
     fixtures.valid.forEach(function (f) {
       it('exports ' + f.scriptSignature.hex + ' correctly', function () {
-        var signature = new ECSignature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
+        var signature = new Signature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
 
         var scriptSignature = signature.toScriptSignature(f.scriptSignature.hashType)
         assert.strictEqual(scriptSignature.toString('hex'), f.scriptSignature.hex)
@@ -88,7 +88,7 @@ describe('ECSignature', function () {
 
     fixtures.invalid.scriptSignature.forEach(function (f) {
       it('throws ' + f.exception, function () {
-        var signature = new ECSignature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
+        var signature = new Signature(new BigInteger(f.signature.r), new BigInteger(f.signature.s))
 
         assert.throws(function () {
           signature.toScriptSignature(f.hashType)
@@ -101,7 +101,7 @@ describe('ECSignature', function () {
     fixtures.valid.forEach(function (f) {
       it('imports ' + f.scriptSignature.hex + ' correctly', function () {
         var buffer = Buffer.from(f.scriptSignature.hex, 'hex')
-        var parsed = ECSignature.parseScriptSignature(buffer)
+        var parsed = Signature.parseScriptSignature(buffer)
 
         assert.strictEqual(parsed.signature.r.toString(), f.signature.r)
         assert.strictEqual(parsed.signature.s.toString(), f.signature.s)
@@ -114,7 +114,7 @@ describe('ECSignature', function () {
         var buffer = Buffer.from(f.hex, 'hex')
 
         assert.throws(function () {
-          ECSignature.parseScriptSignature(buffer)
+          Signature.parseScriptSignature(buffer)
         }, new RegExp(f.exception))
       })
     })
