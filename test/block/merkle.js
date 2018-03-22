@@ -6,10 +6,26 @@ import data from '../data/blk86756-testnet.json'
 
 const {Hash} = pqccore.crypto
 
+function getMerkleTree(txs, hashFunc) {
+  const tree = txs
+  const count = tree.length
+  let j = 0
+  for (let size = count; size > 1; size = Math.floor((size + 1) / 2)) {
+    for (let i = 0; i < size; i += 2) {
+      const i2 = Math.min(i + 1, size - 1)
+      const buf = Buffer.concat([tree[j + i], tree[j + i2]])
+      tree.push(hashFunc(buf))
+    }
+    j += size
+  }
+
+  return tree
+}
+
 describe('Merkle', () => {
   it('should ', function () {
     const txs = data.transactions.map(t => Buffer.from(t.hash, 'hex'))
-    const root = fastRoot(txs, Hash.sha256sha256)
+    const root = getMerkleTree(txs, Hash.sha256sha256) // fastRoot(txs, Hash.sha256sha256)
     // assert.equal(root.toString('hex'), '58e6d52d1eb00470ae1ab4d5a3375c0f51382c6f249fff84e9888286974cfc97')
     const tree = merkle(txs, Hash.sha256sha256)
     console.log(15, root, tree[tree.length - 1].toString('hex'))
@@ -24,7 +40,8 @@ describe('Merkle', () => {
       '3e24580de3f6d75cb77e32472d5b76e14206294e6e82a3e7bb0a1189e363f81a'
     ]
     const txs = hashes.map(t => Buffer.from(t, 'hex'))
-    const root = fastRoot(txs, Hash.sha256)
+    const tree = getMerkleTree(txs, Hash.sha256sha256)
+    const root = tree[tree.length - 1]
     assert.equal(root.toString('hex'), '28893c39d71921af602921bf5916f815b946144d8044e3f01e7049d74340eaf5')
   });
 })
