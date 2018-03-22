@@ -1,129 +1,55 @@
-var superSphincs = require('supersphincs')
+import assert from 'assert'
 
 describe('Sphincs', () => {
   it('should ', async function() {
-    this.timeout(200 * 1000)
-    const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-        await superSphincs.keyPair()
-    ;
-
-    const message /*: Uint8Array */ =
-        new Uint8Array([104, 101, 108, 108, 111]) // "hello"
-    ;
-
-    // Optional additional data argument, similar conceptually to what AEAD ciphers support.
-    // If specified, must be the same when signing and verifying. For more information and
-    // usage advice, see: https://download.libsodium.org/doc/secret-key_cryptography/aead.html
-    const additionalData /*: Uint8Array */ =
-        new Uint8Array([119, 111, 114, 108, 100]) // "world"
-    ;
-
-    /* Combined signatures */
-
-    const signed /*: Uint8Array */ =
-        await superSphincs.sign(message, keyPair.privateKey, additionalData)
-    ;
-
-    const verified /*: Uint8Array */ =
-        await superSphincs.open(signed, keyPair.publicKey, additionalData) // same as message
-    ;
-
-    /* Detached signatures */
-
-    const signature /*: Uint8Array */ =
-        await superSphincs.signDetached(message, keyPair.privateKey, additionalData)
-    ;
-
-    console.log(37, new Buffer(signature).toString('hex'))
-
-    const isValid /*: boolean */ =
-        await superSphincs.verifyDetached(
-            signature,
-            message,
-            keyPair.publicKey,
-            additionalData
-        ) // true
-    ;
-
-    console.log(48, isValid)
-    /* Export and optionally encrypt keys */
-
-    const keyData /*: {
-		private: {
-			rsa: string;
-			sphincs: string;
-			superSphincs: string;
-		};
-		public: {
-			rsa: string;
-			sphincs: string;
-			superSphincs: string;
-		};
-	} */ =
-        await superSphincs.exportKeys(keyPair, 'secret passphrase')
-    ;
-
-    let localStorage = {};
-
-    // May now save exported keys to disk (or whatever)
-    localStorage.superSphincsPrivateKey = keyData.private.superSphincs;
-    localStorage.sphincsPrivateKey = keyData.private.sphincs;
-    localStorage.rsaPrivateKey = keyData.private.rsa;
-    localStorage.superSphincsPublicKey = keyData.public.superSphincs;
-    localStorage.sphincsPublicKey = keyData.public.sphincs;
-    localStorage.rsaPublicKey = keyData.public.rsa;
-
-    console.log(75, localStorage)
-    /* Reconstruct an exported key using either the superSphincs
-        value or any pair of valid sphincs and rsa values */
-
-    const keyPair1 = await superSphincs.importKeys({
-      public: {
-        rsa: localStorage.rsaPublicKey,
-        sphincs: localStorage.sphincsPublicKey
-      }
-    });
-
-    // May now use keyPair1.publicKey as in the above examples
-    console.log('Import #1:');
-    console.log(keyPair1);
-
-    const keyPair2 = await superSphincs.importKeys(
-        {
-          private: {
-            superSphincs: localStorage.superSphincsPrivateKey
-          }
-        },
-        'secret passphrase'
-    );
-
-    // May now use keyPair2 as in the above examples
-    console.log('Import #2:');
-    console.log(keyPair2);
-
-    // Constructing an entirely new SuperSPHINCS key pair from
-    // the original SPHINCS key pair and a new RSA key pair
-    const keyPair3 = await superSphincs.importKeys(
-        {
-          private: {
-            rsa: (
-                await superSphincs.exportKeys(
-                    await superSphincs.keyPair(),
-                    'hunter2'
-                )
-            ).private.rsa,
-            sphincs: localStorage.sphincsPrivateKey
-          }
-        },
-        {
-          rsa: 'hunter2',
-          sphincs: 'secret passphrase'
-        }
-    );
-
-    // May now use keyPair3 as in the above examples
-    console.log('Import #3:');
-    console.log(keyPair3);
+     const array = [168, -8, 57, 116, -192, -15, 152, -379, -133, 255, 67, 190, 98, 109, -227, -64, 119, -269, -17, 109, 159, -16, -222, -268, -125, -274,
+       -185, -71, 243, -132, -57, -474, 91, 31, 10, 203, 8, 332, -114, 140, 116, 87, -9, 616, 108, -59, 26, 283, -618, 271, -153,
+       43, -188, 26, -6, 437, -61, -166, -37, -129, 36, -140, -46, -128, 158, 210, 111, -154, 187, -199, 30, -173, -247, 49, -70, -125,
+       -98, -428, 168, -464, 152, -516, -292, -332, 133, -287, -129, 116, -153, 116, 348, 198, 154, 147, -50, 184, -31, -30, 133, 50, -111,
+       7, -30, 26, -19, -221, -56, 100, -215, 104, 33, -22, 67, 272, -74, -205, -265, -48, 274, 171, -263, 246, 398, 174, 505, 65,
+       -281, -144, -453, 90, 230, 109, -279, 209, -305, 378, -227, -349, 252, -251, -108, -156, -278, 2, 150, 54, -327, 64, -145, -201, 104,
+       -2, 249, -425, 60, 31, 1, 365, 86, -55, -184, 7, -72, 186, 2, -279, 108, -136, -31, 95, -129, 181, 190, -41, -67, 304,
+       120, 59, 389, -234, 22, 118, 592, 265, 69, -146, 136, 227, -147, 144, 336, 128, 8, 38, 138, -33, -360, -85, -423, -2, 493,
+       -141, 19, -101, -172, 238, 228, -204, 74, -39, 22, -368, 122, 221, -93, -13, -83, 47, 63, -122, 111, 42, 154, -207, -507, 48,
+       -256, 229, -55, 137, -315, 26, -476, -48, -179, -358, 383, 267, 61, -66, 374, 263, -145, 86, 27, 224, 567, -299, 395, 495, 501,
+       114, 160, -44, 190, 36, 36, 246, -36, 16, -193, 365, 88, 231, -131, -177, -17, -1, -228, -48, 44, 137, 128, 251, -330, 174,
+       -41, 89, 239, 115, -281, -29, -99, 304, -326, 128, 210, 166, -251, 123, -117, -37, -181, 6, 181, -89, 202, 132, 111, -304, 171,
+       -21, -247, 324, -61, 357, -135, -92, 162, 12, -193, -95, 123, 102, -371, -211, -79, 275, -250, -198, 227, 67, -60, -22, -323, -120,
+       18, -41, -306, -76, -126, 51, 288, -3, 14, -93, -81, -94, -147, -45, -33, 249, -66, -477, 168, -184, 365, -20, -172, -241, -172,
+       -305, 17, -269, 130, 198, -166, 40, -112, 204, -188, 347, 336, -10, 113, 244, 109, 64, 2, 192, 308, -16, 90, -21, -222, -176,
+       144, -408, -39, -48, -388, 1, 37, -229, 56, -286, 19, -292, 281, 71, 398, 65, -148, -197, -230, -325, 162, -16, -105, 54, -394,
+       57, -192, -419, 151, 87, -192, -361, -18, -153, -15, -279, -57, -193, -169, 140, 78, -435, -257, 16, -249, -109, 52, 85, 223, 436,
+       -61, -345, 93, 403, -228, 14, -368, 367, -230, -214, -297, -65, 64, -605, 21, 90, -4, 73, -219, 159, 86, -45, -192, 134, -100,
+       -492, -78, -88, -173, 126, 38, 11, 58, -197, -38, -72, -114, 101, 89, 130, 82, -418, -103, 170, -4, -40, -213, -87, -206, -11,
+       -288, -228, -65, 300, -185, -148, 97, 110, -129, 2, 165, 214, 155, 28, 206, -266, 208, -220, -17, 110, -125, 56, 446, -237, -78,
+       -1, -9, -17, -93, -98, 354, -92, -119, 6, 4, 177,
+       -1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, -1, 0, 1,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, -1, -1, 0, 0, 0, 1,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0,
+       0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0, 0,
+       0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0,
+       0, 0, -1, 0, 0, 0, 1, -1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0,
+       0, 0, 0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+       0, -1, 1, 0, 0, -1, 1, 1, -1, 0, 0, 0, 0, 0, -1, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0,
+       1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1,
+       1, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, -1, 0, 0, 0, 0,
+       0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0,
+       1, 1, 1, 0, 1, 0, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0,
+       0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, -1, 0, -1, 0, -1, 0, 0, 0]
+    const buffer = Buffer.from(array)
+    console.log(array.length)
+    // for (let i = 0; i < array.length; ++i) {
+    //    buffer.writeInt32LE(array[i], i)
+    // }
+    console.log(55, buffer.length, buffer.toString('hex'))
   });
 })
 
