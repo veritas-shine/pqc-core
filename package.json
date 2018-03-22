@@ -11,6 +11,7 @@
     "prebuild:es": "rimraf dist/es",
     "prepublish": "cross-env NODE_ENV=production npm run build",
     "test-block": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block/*.js",
+    "test-blockheader": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block/blockheader.js",
     "test-script": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/script/script.js",
     "test-transaction": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction/*.js",
     "test-transaction-input": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction/input/*.js",
@@ -38,6 +39,7 @@
     "buffer-compare": "^1.1.1",
     "cubehash": "^1.1.0",
     "lodash": "^4.17.4",
+    "merkle-lib": "^2.0.10",
     "tweetnacl": "^1.0.0",
     "xmss": "0.0.11"
   },

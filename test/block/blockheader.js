@@ -2,10 +2,10 @@ import path from 'path'
 import pqccore from '../../lib'
 import Block from '../../lib/block/block'
 
-const {Transaction, Script} = pqccore
-const {BN} = pqccore.crypto
-const {BufferReader, BufferWriter} = pqccore.encoding
-const {BlockHeader} = pqccore
+const { Transaction, Script } = pqccore
+const { BN } = pqccore.crypto
+const { BufferReader, BufferWriter } = pqccore.encoding
+const { BlockHeader } = pqccore
 const fs = require('fs');
 const should = require('chai').should();
 
@@ -33,6 +33,19 @@ describe('BlockHeader', () => {
   const bhhex = data.blockheaderhex;
   const bhbuf = Buffer.from(bhhex, 'hex');
 
+  it('should create block header', function () {
+    const hash = '0000fcd2f56cfd911c8963510443ecb0bd82a254c1b22b8baee2a36eccd5e01e';
+    const header = new BlockHeader({
+      hash: '0000fcd2f56cfd911c8963510443ecb0bd82a254c1b22b8baee2a36eccd5e01e',
+      version: 1,
+      prevHash: Buffer.from('0000000000000000000000000000000000000000000000000000000000000000', 'hex'),
+      merkleRoot: Buffer.from('c28d0bb90de0d366f98bf1f8e4112eedbae754a4ca49d218dee48d7eef7d5bd9', 'hex'),
+      time: 1521611579,
+      qbits: 520158976,
+      nonce: 33397
+    })
+    console.log(45, header.hash, header.toBuffer().toString('hex'))
+  });
   it('should make a new blockheader', () => {
     new BlockHeader(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
   });
