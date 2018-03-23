@@ -25,6 +25,9 @@ export default class Block {
     this.nonce = 0
   }
 
+  static fromBuffer() {
+
+  }
   /**
    *
    * @return {Buffer}

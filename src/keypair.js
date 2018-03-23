@@ -16,6 +16,10 @@ export default class Keypair {
     this.pair = new xmss.Xmss(seed, 4)
   }
 
+  static fromBuffer() {
+
+  }
+
   privateKey() {
     return BufferUtil.vectorToBuffer(this.pair.getSK())
   }
@@ -34,6 +38,15 @@ export default class Keypair {
     const prefix = Buffer.from([this.network.publicKeyHash])
     buffer = Buffer.concat([prefix, buffer])
     return base58check.encode(buffer)
+  }
+
+  /**
+   *
+   * @param address {String}
+   */
+  static addressToPublicKeyHash(address) {
+    const buffer = base58check.decode(address)
+    return buffer.slice(1)
   }
 
   /**

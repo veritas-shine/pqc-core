@@ -54,8 +54,31 @@ const base58check = {
   }
 }
 
+function numberToBuffer(number, fixedLength) {
+  let str = number.toString(16)
+  if (str.length / 2 === 1) {
+    str = `0${str}`
+  }
+
+  if (fixedLength) {
+    const count = fixedLength - str.length
+    if (count > 0) {
+      str = '0'.repeat(count) + str
+    }
+  }
+  return Buffer.from(str, 'hex')
+}
+
+function int32ToBuffer(number) {
+  const b = Buffer.alloc(4)
+  b.writeInt32LE(number)
+  return b
+}
+
 export default {
   base58,
   base58check,
-  BufferUtil
+  BufferUtil,
+  numberToBuffer,
+  int32ToBuffer
 }

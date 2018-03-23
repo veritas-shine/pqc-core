@@ -1,30 +1,56 @@
 import Hash from '../hash'
+import Input from './input'
+import Output from './output'
+import Keypair from '../keypair'
 
 export default class Transaction {
   constructor(obj) {
     this.version = obj.version
-    this.inputs = []
-    this.outputs = []
-    this.locktime = 0
+    this.inputs = obj.inputs.map(obj => Input.fromJSON(obj))
+    this.outputs = obj.outputs.map(obj => Output.fromJSON(obj))
+    this.locktime = obj.locktime
+  }
+
+  /**
+   *
+   * @param keypair {Keypair}
+   * @param coinbase {Buffer}
+   * @param amount {Number}
+   * @return {Transaction}
+   */
+  static createCoinbaseTransaction(keypair, coinbase, amount) {
+    const obj = {
+      signature: coinbase
+    }
+    const address = keypair.toAddress()
+    const inputs = [new Input(obj)]
+    const publicKeyHash = Keypair.addressToPublicKeyHash(address)
+    const outputs = [new Output(amount, publicKeyHash)]
+    const info = {
+      version: 1,
+      inputs,
+      outputs,
+      locktime: 0
+    }
+    return new Transaction(info)
   }
 
   /**
    * @return {Buffer}
    */
   toBuffer() {
-    const b1 = Buffer.from(new Uint32Array(this.version))
-    let bi = Buffer.from(new Uint32Array(this.inputs.length))
-    const b = this.inputs.map(looper => looper.toBuffer())
-    b.unshift(bi)
-    bi = Buffer.concat(b)
+    const obj = {
+      version: this.version,
+      inputs: this.inputs.map(l => l.toJSON()),
+      outputs: this.outputs.map(l => l.toJSON()),
+      locktime: this.locktime
+    }
+    return Buffer.from(JSON.stringify(obj), 'utf8')
+  }
 
-    let bo = Buffer.from(new Uint32Array(this.outputs.length))
-    const b2 = this.outputs.map(looper => looper.toBuffer())
-    b2.unshift(bo)
-    bo = Buffer.concat(b2)
-
-    const bt = Buffer.from(new Uint32Array(this.locktime))
-    return Buffer.concat([b1, bi, bo, bt])
+  static fromBuffer(buffer) {
+    const obj = JSON.parse(buffer.toString('utf8'))
+    return new Transaction(obj)
   }
 
   /**
@@ -32,5 +58,9 @@ export default class Transaction {
    */
   hash() {
     return Hash.defaultHash(this.toBuffer())
+  }
+
+  inspect() {
+    return `<Transaction ${this.hash().toString('hex')} >`
   }
 }

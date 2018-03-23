@@ -6,7 +6,11 @@ const { BufferUtil } = Encoding
 
 export default class Hash {
   /**
-   *
+   * @type {string}
+   */
+  static NULL = '0000000000000000000000000000000000000000000000000000000000000000'
+
+  /**
    * @param buffer {Buffer}
    * @return {Buffer}
    */

@@ -15,7 +15,7 @@ describe('encoding', () => {
 
   it('should create buffer', function () {
     const b = Buffer.from([0x30, 0x31])
-    const b1 = Buffer.from([19999999999999])
+    const b1 = Buffer.from(new Uint32Array(19999999999999))
     console.log(b, b.reverse(), b1)
   });
 })

@@ -10,7 +10,8 @@
     "prebuild:commonjs": "rimraf dist/commonjs",
     "prebuild:es": "rimraf dist/es",
     "prepublish": "cross-env NODE_ENV=production npm run build",
-    "test-base": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/*.js"
+    "test-base": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/*.js",
+    "test-tx": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/tearsofphoenix/pqc-core#readme",
   "dependencies": {
     "base-x": "^3.0.4",
+    "bigi": "^1.4.2",
     "bn.js": "^4.11.8",
     "buffer-compare": "^1.1.1",
     "cubehash": "^1.1.0",
