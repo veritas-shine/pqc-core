@@ -3,7 +3,7 @@ import Network from './network'
 import encoding from './encoding'
 import Hash from './hash'
 
-const {base58, BufferUtil} = encoding
+const {base58check, BufferUtil} = encoding
 
 export default class Keypair {
   static addressHashFunction = Hash.sha256ripemd160
@@ -33,7 +33,7 @@ export default class Keypair {
     let buffer = Keypair.addressHashFunction(this.publicKey())
     const prefix = Buffer.from([this.network.publicKeyHash])
     buffer = Buffer.concat([prefix, buffer])
-    return base58.encode(buffer)
+    return base58check.encode(buffer)
   }
 
   /**

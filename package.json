@@ -5,8 +5,8 @@
   "main": "dist/es/index.js",
   "scripts": {
     "build": "npm run build:commonjs && npm run build:es ",
-    "build:commonjs": "babel lib -d dist/commonjs ",
-    "build:es": "cross-env BABEL_ENV=es babel lib -d dist/es",
+    "build:commonjs": "babel src -d dist/commonjs ",
+    "build:es": "cross-env BABEL_ENV=es babel src -d dist/es",
     "prebuild:commonjs": "rimraf dist/commonjs",
     "prebuild:es": "rimraf dist/es",
     "prepublish": "cross-env NODE_ENV=production npm run build",

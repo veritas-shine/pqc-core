@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import cubehash from 'cubehash'
 import Encoding from './encoding'
 
 const { BufferUtil } = Encoding
@@ -47,6 +48,11 @@ export default class Hash {
   static sha256ripemd160(buffer) {
     buffer = BufferUtil.ensureBuffer(buffer)
     return Hash.sha256(Hash.ripemd160(buffer))
+  }
+
+  static cube256(buffer) {
+    buffer = BufferUtil.ensureBuffer(buffer)
+    return cubehash(256, buffer)
   }
 
   /**
