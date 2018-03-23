@@ -1,7 +1,9 @@
 import Encoding from '../encoding'
 import Hash from '../hash'
+import IO from '../io/transaction'
 
 const { BufferUtil } = Encoding
+const {TXOutput} = IO
 
 export default class TransactionOutput {
   constructor(amount, publicKeyHash) {
@@ -26,11 +28,11 @@ export default class TransactionOutput {
   }
 
   toBuffer() {
-    return Buffer.from(JSON.stringify(this.toJSON()), 'utf8')
+    return TXOutput.encode(this).finish()
   }
 
   static fromBuffer(buffer) {
-    const obj = JSON.parse(buffer.toString('utf8'))
+    const obj = TXOutput.decode(buffer)
     return new TransactionOutput(obj)
   }
 

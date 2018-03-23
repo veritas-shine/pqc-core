@@ -2,6 +2,8 @@ import Hash from '../hash'
 import Input from './input'
 import Output from './output'
 import Keypair from '../keypair'
+import IO from '../io/transaction'
+const {TX} = IO
 
 export default class Transaction {
   constructor(obj) {
@@ -39,17 +41,11 @@ export default class Transaction {
    * @return {Buffer}
    */
   toBuffer() {
-    const obj = {
-      version: this.version,
-      inputs: this.inputs.map(l => l.toJSON()),
-      outputs: this.outputs.map(l => l.toJSON()),
-      locktime: this.locktime
-    }
-    return Buffer.from(JSON.stringify(obj), 'utf8')
+    return TX.encode(this).finish()
   }
 
   static fromBuffer(buffer) {
-    const obj = JSON.parse(buffer.toString('utf8'))
+    const obj = TX.decode(buffer)
     return new Transaction(obj)
   }
 

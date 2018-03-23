@@ -1,7 +1,9 @@
 import Hash from '../hash'
 import Encoding from '../encoding'
+import IO from '../io/transaction'
 
 const {BufferUtil} = Encoding
+const {TXInput} = IO
 
 export default class TransactionInput {
   static coinbaseHash = Hash.NULL
@@ -61,11 +63,11 @@ export default class TransactionInput {
    * @return {Buffer}
    */
   toBuffer() {
-    return Buffer.from(JSON.stringify(this.toJSON()), 'utf8')
+    return TXInput.encode(this).finish()
   }
 
   static fromBuffer(buffer) {
-    const obj = JSON.parse(buffer.toString('utf8'))
+    const obj = TXInput.decode(buffer)
     return new TransactionInput(obj)
   }
 

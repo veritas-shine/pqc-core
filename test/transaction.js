@@ -1,5 +1,7 @@
 import pqccore from '../src'
+import IO from '../src/io/transaction'
 
+const {TXInput, TXOutput} = IO
 const {Transaction, Keypair, Hash} = pqccore
 
 describe('Transaction', () => {
@@ -12,11 +14,24 @@ describe('Transaction', () => {
   });
 
   it('should create transaction from hex', function () {
-    const hex = '7b2276657273696f6e223a312c22696e70757473223a5b7b227072657654784944223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030222c226f7574496e646578223a7b2274797065223a22427566666572222c2264617461223a5b3235352c3235352c3235352c3235355d7d2c227369676e6174757265223a223734363836393733323036393733323036373635366536353733363937333230363236633666363336623231227d5d2c226f757470757473223a5b7b22616d6f756e74223a353030303030303030302c227075626c69634b657948617368223a2239626165636437373261626361636437346465656430333132363037666162366630663763666631376630343332373839363734636534353132633236346336227d5d2c226c6f636b74696d65223a307d'
+    const hex = '0801123c0a20000000000000000000000000000000000000000000000000000000000000000010001a16746869732069732067656e6573697320626c6f636b211a2b09000000205fa0f24112209baecd772abcacd74deed0312607fab6f0f7cff17f0432789674ce4512c264c62000'
     const buffer = Buffer.from(hex, 'hex')
     const tx = Transaction.fromBuffer(buffer)
     console.log(tx)
-    tx.inputs.forEach(console.log)
-    tx.outputs.forEach(console.log)
+    tx.inputs.forEach(looper => {
+      const m = new TXInput(looper)
+      const buffer = TXInput.encode(m).finish()
+      console.log(buffer.toString('hex'))
+      console.log(looper.toBuffer().toString('hex'))
+      console.log(TXInput.decode(buffer))
+    })
+
+    tx.outputs.forEach(looper => {
+      console.log(30, looper.amount)
+      const m = new TXOutput(looper)
+      const buffer = TXOutput.encode(m).finish()
+      console.log(buffer.toString('hex'))
+      console.log(TXOutput.decode(buffer))
+    })
   });
 })
