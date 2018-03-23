@@ -32,8 +32,23 @@ Field.d(3, TXInput, 'repeated')(TX.prototype, 'inputs')
 Field.d(4, TXOutput, 'repeated')(TX.prototype, 'outputs')
 Field.d(5, 'int32')(TX.prototype, 'locktime')
 
+function Block(properties) {
+  protobuf.Message.call(this, properties)
+}
+
+(Block.prototype = Object.create(protobuf.Message)).constructor = Block
+Field.d(1, 'int32')(Block.prototype, 'version')
+Field.d(2, 'bytes')(Block.prototype, 'prevHash')
+Field.d(3, 'int32')(Block.prototype, 'qbits')
+Field.d(4, 'int32')(Block.prototype, 'time')
+Field.d(5, 'bytes')(Block.prototype, 'merkleRoot')
+Field.d(6, TX, 'repeated')(Block.prototype, 'transactions')
+Field.d(7, 'int32')(Block.prototype, 'nonce')
+Field.d(8, 'double')(Block.prototype, 'height')
+
 export default {
   TXInput,
   TXOutput,
-  TX
+  TX,
+  Block
 }

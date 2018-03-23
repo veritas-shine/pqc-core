@@ -51,6 +51,12 @@ export default class Transaction {
     return new Transaction(obj)
   }
 
+  static fromJSON(obj) {
+    if (obj instanceof Transaction) {
+      return obj
+    }
+    return new Transaction(obj)
+  }
   /**
    * @return {Buffer}
    */
