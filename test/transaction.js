@@ -1,5 +1,5 @@
 import pqccore from '../src'
-import IO from '../src/io/transaction'
+import IO from '../src/io'
 
 const {TXInput, TXOutput} = IO
 const {Transaction, Keypair, Hash} = pqccore
@@ -14,7 +14,7 @@ describe('Transaction', () => {
   });
 
   it('should create transaction from hex', function () {
-    const hex = '0801123c0a20000000000000000000000000000000000000000000000000000000000000000010001a16746869732069732067656e6573697320626c6f636b211a2b09000000205fa0f24112209baecd772abcacd74deed0312607fab6f0f7cff17f0432789674ce4512c264c62000'
+    const hex = '080110011a3c0a20000000000000000000000000000000000000000000000000000000000000000010001a16746869732069732067656e6573697320626c6f636b21222b09000000205fa0f24112209baecd772abcacd74deed0312607fab6f0f7cff17f0432789674ce4512c264c62800'
     const buffer = Buffer.from(hex, 'hex')
     const tx = Transaction.fromBuffer(buffer)
     console.log(tx)

@@ -1,6 +1,6 @@
 import Hash from '../hash'
 import Encoding from '../encoding'
-import IO from '../io/transaction'
+import IO from '../io'
 
 const {BufferUtil} = Encoding
 const {TXInput} = IO

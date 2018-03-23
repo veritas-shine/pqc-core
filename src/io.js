@@ -1,6 +1,6 @@
 import protobuf from 'protobufjs/light'
 
-const {Field, Type} = protobuf
+const {Field} = protobuf
 
 function TXInput(properties) {
   protobuf.Message.call(this, properties)
@@ -26,10 +26,11 @@ function TX(properties) {
 }
 
 (TX.prototype = Object.create(protobuf.Message)).constructor = TX
-Field.d(1, 'int32')(TX.prototype, 'version')
-Field.d(2, TXInput, 'repeated')(TX.prototype, 'inputs')
-Field.d(3, TXOutput, 'repeated')(TX.prototype, 'outputs')
-Field.d(4, 'int32')(TX.prototype, 'locktime')
+Field.d(1, 'int32')(TX.prototype, 'type')
+Field.d(2, 'int32')(TX.prototype, 'version')
+Field.d(3, TXInput, 'repeated')(TX.prototype, 'inputs')
+Field.d(4, TXOutput, 'repeated')(TX.prototype, 'outputs')
+Field.d(5, 'int32')(TX.prototype, 'locktime')
 
 export default {
   TXInput,

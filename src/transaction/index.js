@@ -2,11 +2,13 @@ import Hash from '../hash'
 import Input from './input'
 import Output from './output'
 import Keypair from '../keypair'
-import IO from '../io/transaction'
+import IO from '../io'
 const {TX} = IO
 
 export default class Transaction {
+  static NormalType = 0x1
   constructor(obj) {
+    this.type = Transaction.NormalType
     this.version = obj.version
     this.inputs = obj.inputs.map(obj => Input.fromJSON(obj))
     this.outputs = obj.outputs.map(obj => Output.fromJSON(obj))
