@@ -27,6 +27,11 @@ export default class Block {
     this.transactions = obj.transactions.map(t => Transaction.fromJSON(t))
 
     this.nonce = obj.nonce
+    console.log(30, obj.id)
+    if (obj.id && obj.id !== this.hash().toString('hex')) {
+      // provided id not match!!!
+      throw new Error('invalid block id!')
+    }
 
     Object.defineProperty(this, 'id', {
       get: () => this.hash().toString('hex'),
@@ -40,6 +45,7 @@ export default class Block {
    */
   static fromBuffer(buffer) {
     const obj = IO.Block.decode(buffer)
+    console.log(48, obj)
     return new Block(obj)
   }
 

@@ -26,7 +26,7 @@ describe('Block', () => {
     template.transactions = [tx]
     const block = new Block(template)
     const buffer = block.toBuffer()
+    console.log(29, buffer.length, buffer.toString('hex'), block.id)
     const b2 = Block.fromBuffer(buffer)
-    console.log(29, buffer.length, block.hash())
   });
 })
