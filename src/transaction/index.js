@@ -16,7 +16,7 @@ export default class Transaction {
     this.locktime = obj.locktime
     Object.defineProperty(this, 'txid', {
       get: () => this.hash().toString('hex'),
-      writable: false
+      set: () => { }
     })
   }
 
@@ -49,6 +49,13 @@ export default class Transaction {
    */
   toBuffer() {
     return TX.encode(this).finish()
+  }
+
+  /**
+   * @return {String}
+   */
+  toString() {
+    return this.toBuffer().toString('hex')
   }
 
   /**
