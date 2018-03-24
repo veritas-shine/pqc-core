@@ -11,7 +11,7 @@ function sha256cube256(buffer) {
 }
 
 /**
- *
+ * concat buffer of a block | blocktemplate
  * @return {Buffer}
  */
 function concatBuffer(blockTemplate) {
@@ -36,7 +36,7 @@ function concatBuffer(blockTemplate) {
 }
 
 /**
- *
+ * get target buffer from qbits
  * @param bits {Number}
  * @return {Buffer}
  */

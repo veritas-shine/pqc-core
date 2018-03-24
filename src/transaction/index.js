@@ -2,13 +2,13 @@ import Hash from '../hash'
 import Input from './input'
 import Output from './output'
 import Keypair from '../keypair'
+import Consensus from '../consensus'
 import IO from '../io'
 const {TX} = IO
 
 export default class Transaction {
-  static NormalType = 0x1
   constructor(obj) {
-    this.type = Transaction.NormalType
+    this.type = Consensus.TX.type.Normal
     this.version = obj.version
     this.inputs = obj.inputs.map(obj => Input.fromJSON(obj))
     this.outputs = obj.outputs.map(obj => Output.fromJSON(obj))
@@ -16,7 +16,7 @@ export default class Transaction {
   }
 
   /**
-   *
+   * create a coinbase transaction
    * @param keypair {Keypair}
    * @param coinbase {Buffer}
    * @param amount {Number}
@@ -39,31 +39,45 @@ export default class Transaction {
     return new Transaction(info)
   }
 
-  /**
+  /** pack transaction to protobuf
    * @return {Buffer}
    */
   toBuffer() {
     return TX.encode(this).finish()
   }
 
+  /**
+   * create transaction from protobuf formated data
+   * @param buffer
+   * @return {Transaction}
+   */
   static fromBuffer(buffer) {
     const obj = TX.decode(buffer)
     return new Transaction(obj)
   }
 
+  /**
+   * create transaction from object
+   * @param obj
+   * @return {Transaction}
+   */
   static fromJSON(obj) {
     if (obj instanceof Transaction) {
       return obj
     }
     return new Transaction(obj)
   }
-  /**
+  /** do sha256sha256 on transaction buffer
    * @return {Buffer}
    */
   hash() {
     return Hash.defaultHash(this.toBuffer())
   }
 
+  /**
+   * debug usage
+   * @return {string}
+   */
   inspect() {
     return `<Transaction ${this.hash().toString('hex')} >`
   }

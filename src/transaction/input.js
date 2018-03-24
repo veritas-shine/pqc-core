@@ -1,15 +1,12 @@
 import Hash from '../hash'
 import Encoding from '../encoding'
 import IO from '../io'
+import Consensus from '../consensus'
 
 const {BufferUtil} = Encoding
 const {TXInput} = IO
 
 export default class TransactionInput {
-  static coinbaseHash = Hash.NULL
-  static coinbaseSequence = 0xFFFFFFFF
-  static maxSequence = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF])
-  static txIDLength = 32
   /**
    *
    * @param obj {Object}
@@ -17,8 +14,8 @@ export default class TransactionInput {
   constructor(obj) {
     const {prevTxID, outIndex, signature, publicKey} = obj
     if (!prevTxID || TransactionInput.isCoinbase(prevTxID)) {
-      this.prevTxID = BufferUtil.ensureBuffer(TransactionInput.coinbaseHash)
-      this.outIndex = TransactionInput.maxSequence
+      this.prevTxID = BufferUtil.ensureBuffer(Consensus.TX.coinbase.HASH)
+      this.outIndex = Consensus.TX.coinbase.SequenceBuffer
     } else {
       this.prevTxID = BufferUtil.ensureBuffer(prevTxID)
       this.outIndex = outIndex
@@ -27,11 +24,11 @@ export default class TransactionInput {
     this.signature = BufferUtil.ensureBuffer(signature)
   }
 
-  /**
+  /** check if txID is a coinbase
    * @return {Boolean}
    */
   static isCoinbase(txID) {
-    return txID.toString('hex') === TransactionInput.coinbaseHash
+    return txID.toString('hex') === Consensus.TX.coinbase.HASH
   }
 
   static createSignature(prevTxID, outIndex, keypair) {
