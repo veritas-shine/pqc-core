@@ -4,7 +4,8 @@ import Output from './output'
 import Keypair from '../keypair'
 import Consensus from '../consensus'
 import IO from '../io'
-const {TX} = IO
+
+const { TX } = IO
 
 export default class Transaction {
   constructor(obj) {
@@ -13,6 +14,10 @@ export default class Transaction {
     this.inputs = obj.inputs.map(obj => Input.fromJSON(obj))
     this.outputs = obj.outputs.map(obj => Output.fromJSON(obj))
     this.locktime = obj.locktime
+    Object.defineProperty(this, 'txid', {
+      get: () => this.hash().toString('hex'),
+      writable: false
+    })
   }
 
   /**
@@ -67,11 +72,15 @@ export default class Transaction {
     }
     return new Transaction(obj)
   }
+
   /** do sha256sha256 on transaction buffer
    * @return {Buffer}
    */
   hash() {
-    return Hash.defaultHash(this.toBuffer())
+    if (!this._hash) {
+      this._hash = Hash.defaultHash(this.toBuffer())
+    }
+    return this._hash
   }
 
   /**

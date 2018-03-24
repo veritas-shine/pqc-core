@@ -66,6 +66,11 @@ export default class Block {
     this.transactions = obj.transactions.map(t => Transaction.fromJSON(t))
 
     this.nonce = obj.nonce
+
+    Object.defineProperty(this, 'id', {
+      get: () => this.hash().toString('hex'),
+      writable: false
+    })
   }
 
   /**
@@ -89,7 +94,10 @@ export default class Block {
    * @return {Buffer}
    */
   hash() {
-    return Block.hashFunction(concatBuffer(this)).reverse()
+    if (!this._hash) {
+      this._hash = Block.hashFunction(concatBuffer(this)).reverse()
+    }
+    return this._hash
   }
 
   static mine(blockTemplate, nonce = 0) {
