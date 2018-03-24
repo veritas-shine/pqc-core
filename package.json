@@ -1,6 +1,6 @@
 {
   "name": "pqc-core",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/es/index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "bn.js": "^4.11.8",
     "buffer-compare": "^1.1.1",
     "cubehash": "^1.1.0",
+    "jison": "^0.4.18",
     "lodash": "^4.17.4",
     "merkle-lib": "^2.0.10",
     "protobufjs": "^6.8.6",

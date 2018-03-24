@@ -2,6 +2,11 @@ import protobuf from 'protobufjs/light'
 
 const {Field} = protobuf
 
+/**
+ * create TransactionInput from object
+ * @param properties {Object}
+ * @constructor
+ */
 function TXInput(properties) {
   protobuf.Message.call(this, properties)
 }
@@ -13,6 +18,11 @@ Field.d(2, 'int32')(TXInput.prototype, 'outIndex')
 Field.d(3, 'bytes')(TXInput.prototype, 'signature')
 Field.d(4, 'bytes', 'optional')(TXInput.prototype, 'publicKey')
 
+/**
+ * create TransactionOutput
+ * @param properties
+ * @constructor
+ */
 function TXOutput(properties) {
   protobuf.Message.call(this, properties)
 }
@@ -21,6 +31,11 @@ function TXOutput(properties) {
 Field.d(1, 'double')(TXOutput.prototype, 'amount')
 Field.d(2, 'bytes')(TXOutput.prototype, 'publicKeyHash')
 
+/**
+ * serialize Transaction Object
+ * @param properties
+ * @constructor
+ */
 function TX(properties) {
   protobuf.Message.call(this, properties)
 }
@@ -32,6 +47,11 @@ Field.d(3, TXInput, 'repeated')(TX.prototype, 'inputs')
 Field.d(4, TXOutput, 'repeated')(TX.prototype, 'outputs')
 Field.d(5, 'int32')(TX.prototype, 'locktime')
 
+/**
+ * serialize Block
+ * @param properties
+ * @constructor
+ */
 function Block(properties) {
   protobuf.Message.call(this, properties)
 }

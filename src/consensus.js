@@ -1,6 +1,9 @@
 import Hash from './hash'
 
 export default {
+  Block: {
+    maxNonce: 0xFFFFFFFF
+  },
   TX: {
     type: {
       Normal: 0x001,

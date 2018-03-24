@@ -3,6 +3,7 @@ import IO from './io'
 import Encoding from './encoding'
 import Hash from './hash'
 import Transaction from './transaction'
+import Consensus from './consensus'
 
 const { BufferUtil } = Encoding
 
@@ -15,7 +16,7 @@ function sha256cube256(buffer) {
  * @return {Buffer}
  */
 function concatBuffer(blockTemplate) {
-  const {version, prevHash, merkleRoot, time, qbits, nonce} = blockTemplate
+  const { version, prevHash, merkleRoot, time, qbits, nonce } = blockTemplate
   // Create little-endian long int (4 bytes) with the version (2) on the first byte
   const versionBuffer = Buffer.alloc(4);
   versionBuffer.writeInt32LE(version, 0);
@@ -52,7 +53,6 @@ function bitsToTargetBuffer(bits) {
 export default class Block {
 
   static hashFunction = sha256cube256
-  static maxNonce = 0xFFFFFFFF
   static invalidNonce = -1
 
   constructor(obj) {
@@ -95,7 +95,8 @@ export default class Block {
   static mine(blockTemplate, nonce = 0) {
     const targetBuffer = bitsToTargetBuffer(blockTemplate.qbits)
     console.log('target:', targetBuffer.toString('hex'))
-    while (nonce < Block.maxNonce) {
+    const { maxNonce } = Consensus.Block
+    while (nonce < maxNonce) {
       blockTemplate.nonce = nonce
       const hash = Block.hashFunction(concatBuffer(blockTemplate)).reverse()
       if (Buffer.compare(targetBuffer, hash) > 0) {
@@ -108,5 +109,3 @@ export default class Block {
     return Block.invalidNonce
   }
 }
-
-
