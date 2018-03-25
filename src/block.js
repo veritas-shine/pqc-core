@@ -5,7 +5,7 @@ import Hash from './hash'
 import Transaction from './transaction'
 import Consensus from './consensus'
 
-const { BufferUtil } = Encoding
+const {BufferUtil} = Encoding
 
 function sha256cube256(buffer) {
   return Hash.sha256(Hash.cube256(buffer))
@@ -27,15 +27,18 @@ export default class Block {
     this.transactions = obj.transactions.map(t => Transaction.fromJSON(t))
 
     this.nonce = obj.nonce
-    console.log(30, obj.id)
-    if (obj.id && obj.id !== this.hash().toString('hex')) {
+
+    if (obj.id && obj.id !== this.hash()
+      .toString('hex')) {
       // provided id not match!!!
       throw new Error('invalid block id!')
     }
 
     Object.defineProperty(this, 'id', {
-      get: () => this.hash().toString('hex'),
-      set: () => { }
+      get: () => this.hash()
+        .toString('hex'),
+      set: () => {
+      }
     })
   }
 
@@ -53,14 +56,34 @@ export default class Block {
    * @return {Buffer}
    */
   toBuffer() {
-    return IO.Block.encode(this).finish()
+    return IO.Block.encode(this)
+      .finish()
+  }
+
+  /**
+   * @return {Object}
+   */
+  toJSON() {
+    const obj = {
+      hash: this.id,
+      height: this.height,
+      version: this.version,
+      prevHash: this.prevHash.toString('hex'),
+      qbits: this.qbits,
+      time: this.time,
+      merkleRoot: this.merkleRoot.toString('hex'),
+      transactions: this.transactions.map(tx => tx.toJSON()),
+      nonce: this.nonce,
+    }
+    return obj
   }
 
   /**
    * @return {String}
    */
   toString() {
-    return this.toBuffer().toString('hex')
+    return this.toBuffer()
+      .toString('hex')
   }
 
   /**
@@ -69,7 +92,8 @@ export default class Block {
    */
   hash() {
     if (!this._hash) {
-      this._hash = Block.hashFunction(Block.concatBuffer(this)).reverse()
+      this._hash = Block.hashFunction(Block.concatBuffer(this))
+        .reverse()
     }
     return this._hash
   }
@@ -80,7 +104,7 @@ export default class Block {
    * @return {Buffer}
    */
   static concatBuffer(blockTemplate) {
-    const { version, prevHash, merkleRoot, time, qbits, nonce } = blockTemplate
+    const {version, prevHash, merkleRoot, time, qbits, nonce} = blockTemplate
     // Create little-endian long int (4 bytes) with the version (2) on the first byte
     const versionBuffer = Buffer.alloc(4);
     versionBuffer.writeInt32LE(version, 0);
@@ -117,10 +141,11 @@ export default class Block {
   static mine(blockTemplate, nonce = 0) {
     const targetBuffer = Block.bitsToTargetBuffer(blockTemplate.qbits)
     console.log('target:', targetBuffer.toString('hex'))
-    const { maxNonce } = Consensus.Block
+    const {maxNonce} = Consensus.Block
     while (nonce < maxNonce) {
       blockTemplate.nonce = nonce
-      const hash = Block.hashFunction(Block.concatBuffer(blockTemplate)).reverse()
+      const hash = Block.hashFunction(Block.concatBuffer(blockTemplate))
+        .reverse()
       if (Buffer.compare(targetBuffer, hash) > 0) {
         // found one
         console.log('found:', nonce, hash.toString('hex'))

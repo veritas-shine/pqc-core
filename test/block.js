@@ -28,5 +28,6 @@ describe('Block', () => {
     const buffer = block.toBuffer()
     console.log(29, buffer.length, buffer.toString('hex'), block.id)
     const b2 = Block.fromBuffer(buffer)
+    console.log(31, b2.toJSON())
   });
 })

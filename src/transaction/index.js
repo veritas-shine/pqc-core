@@ -5,7 +5,7 @@ import Keypair from '../keypair'
 import Consensus from '../consensus'
 import IO from '../io'
 
-const { TX } = IO
+const {TX} = IO
 
 export default class Transaction {
   constructor(obj) {
@@ -15,8 +15,10 @@ export default class Transaction {
     this.outputs = obj.outputs.map(obj => Output.fromJSON(obj))
     this.locktime = obj.locktime
     Object.defineProperty(this, 'txid', {
-      get: () => this.hash().toString('hex'),
-      set: () => { }
+      get: () => this.hash()
+        .toString('hex'),
+      set: () => {
+      }
     })
   }
 
@@ -48,14 +50,26 @@ export default class Transaction {
    * @return {Buffer}
    */
   toBuffer() {
-    return TX.encode(this).finish()
+    return TX.encode(this)
+      .finish()
+  }
+
+  toJSON() {
+    const obj = {
+      version: this.version,
+      inputs: this.inputs.map(l => l.toJSON()),
+      outputs: this.outputs.map(l => l.toJSON()),
+      locktime: this.locktime
+    }
+    return obj
   }
 
   /**
    * @return {String}
    */
   toString() {
-    return this.toBuffer().toString('hex')
+    return this.toBuffer()
+      .toString('hex')
   }
 
   /**
@@ -95,6 +109,7 @@ export default class Transaction {
    * @return {string}
    */
   inspect() {
-    return `<Transaction ${this.hash().toString('hex')} >`
+    return `<Transaction ${this.hash()
+      .toString('hex')} >`
   }
 }
