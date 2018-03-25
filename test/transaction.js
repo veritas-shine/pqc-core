@@ -33,5 +33,9 @@ describe('Transaction', () => {
       console.log(buffer.toString('hex'))
       console.log(TXOutput.decode(buffer))
     })
+  })
+
+  it('should create a normal transaction', function () {
+
   });
 })
