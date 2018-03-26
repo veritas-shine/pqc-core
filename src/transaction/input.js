@@ -15,7 +15,7 @@ export default class TransactionInput {
     const {prevTxID, outIndex, signature, publicKey} = obj
     if (!prevTxID || TransactionInput.isCoinbase(prevTxID)) {
       this.prevTxID = BufferUtil.ensureBuffer(Consensus.TX.coinbase.HASH)
-      this.outIndex = Consensus.TX.coinbase.SequenceBuffer
+      this.outIndex = Consensus.TX.coinbase.Sequence
     } else {
       this.prevTxID = BufferUtil.ensureBuffer(prevTxID)
       this.outIndex = outIndex

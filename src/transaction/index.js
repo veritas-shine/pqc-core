@@ -56,6 +56,7 @@ export default class Transaction {
 
   toJSON() {
     const obj = {
+      txid: this.txid,
       version: this.version,
       inputs: this.inputs.map(l => l.toJSON()),
       outputs: this.outputs.map(l => l.toJSON()),

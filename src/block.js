@@ -34,6 +34,12 @@ export default class Block {
       throw new Error('invalid block id!')
     }
 
+    // const txs = this.transactions.map(l => l.hash())
+    // const root = fastRoot(txs, Hash.defaultHash)
+    // if (!root.equals(this.merkleRoot)) {
+    //   throw new Error('invalid merkle root!')
+    // }
+
     Object.defineProperty(this, 'id', {
       get: () => this.hash()
         .toString('hex'),
@@ -48,7 +54,6 @@ export default class Block {
    */
   static fromBuffer(buffer) {
     const obj = IO.Block.decode(buffer)
-    console.log(48, obj)
     return new Block(obj)
   }
 
