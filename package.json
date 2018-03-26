@@ -1,27 +1,18 @@
 {
   "name": "pqc-core",
-  "version": "0.0.8",
+  "version": "0.1.8",
   "description": "",
   "main": "dist/es/index.js",
   "scripts": {
     "build": "npm run build:commonjs && npm run build:es ",
-    "build:commonjs": "babel lib -d dist/commonjs ",
-    "build:es": "cross-env BABEL_ENV=es babel lib -d dist/es",
+    "build:commonjs": "babel src -d dist/commonjs ",
+    "build:es": "cross-env BABEL_ENV=es babel src -d dist/es",
     "prebuild:commonjs": "rimraf dist/commonjs",
     "prebuild:es": "rimraf dist/es",
     "prepublish": "cross-env NODE_ENV=production npm run build",
-    "test-block": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block/*.js",
-    "test-blockheader": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block/blockheader.js",
-    "test-script": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/script/script.js",
-    "test-transaction": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction/*.js",
-    "test-transaction-input": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction/input/*.js",
-    "test-base": "npm run test-other && npm run test-crypto && npm run test-encoding && npm run test-util",
-    "test-other": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/*-spec.js",
-    "test-privatekey": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/privatekey.js",
-    "test-publickey": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/publickey.js",
-    "test-crypto": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/crypto/*.js",
-    "test-encoding": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/encoding/*.js",
-    "test-util": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/util/*.js"
+    "test-base": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/*.js",
+    "test-block": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block.js",
+    "test-tx": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction.js"
   },
   "repository": {
     "type": "git",
@@ -35,11 +26,14 @@
   "homepage": "https://github.com/tearsofphoenix/pqc-core#readme",
   "dependencies": {
     "base-x": "^3.0.4",
+    "bigi": "^1.4.2",
     "bn.js": "^4.11.8",
     "buffer-compare": "^1.1.1",
     "cubehash": "^1.1.0",
+    "jison": "^0.4.18",
     "lodash": "^4.17.4",
     "merkle-lib": "^2.0.10",
+    "protobufjs": "^6.8.6",
     "tweetnacl": "^1.0.0",
     "xmss": "0.0.11"
   },
