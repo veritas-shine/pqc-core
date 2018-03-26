@@ -71,4 +71,17 @@ export default class Keypair {
     const sv = BufferUtil.bufferToVector(signature)
     return xmss.Xmss.verify(mv, sv, this.pair.getPK())
   }
+
+  /**
+   *
+   * @param message {Buffer}
+   * @param signature {Buffer}
+   * @param publicKey {Buffer}
+   */
+  static verifyMessage(message, signature, publicKey) {
+    const mv = BufferUtil.bufferToVector(message)
+    const sv = BufferUtil.bufferToVector(signature)
+    const pk = BufferUtil.bufferToVector(publicKey)
+    return xmss.Xmss.verify(mv, sv, pk)
+  }
 }

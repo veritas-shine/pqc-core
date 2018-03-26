@@ -2,6 +2,7 @@ import Hash from '../hash'
 import Encoding from '../encoding'
 import IO from '../io'
 import Consensus from '../consensus'
+import Keypair from '../keypair'
 
 const {BufferUtil} = Encoding
 const {TXInput} = IO
@@ -55,17 +56,35 @@ export default class TransactionInput {
     }
     return obj
   }
+
   /**
    *
    * @return {Buffer}
    */
   toBuffer() {
-    return TXInput.encode(this).finish()
+    return TXInput.encode(this)
+      .finish()
   }
 
   static fromBuffer(buffer) {
     const obj = TXInput.decode(buffer)
     return new TransactionInput(obj)
+  }
+
+  /**
+   *
+   * @param publicKeyHash {Buffer}
+   * @return {Boolean}
+   */
+  verify(publicKeyHash) {
+    publicKeyHash = BufferUtil.ensureBuffer(publicKeyHash)
+    if (!TransactionInput.isCoinbase(this.prevTxID)) {
+      const ob = Buffer.from(this.outIndex.toString(16), 'hex')
+      const msg = Buffer.concat([this.prevTxID, ob])
+      return (Hash.defaultHash(this.publicKey).equals(publicKeyHash)
+        && Keypair.verifyMessage(msg, this.signature, this.publicKey))
+    }
+    return true
   }
 
   /**
@@ -76,6 +95,7 @@ export default class TransactionInput {
   }
 
   inspect() {
-    return `<Input ${this.hash().toString('hex')} ${this.signature.toString('hex')}>`
+    return `<Input ${this.hash()
+      .toString('hex')} ${this.signature.toString('hex')}>`
   }
 }
