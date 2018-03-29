@@ -26,8 +26,7 @@ describe('Keypair', () => {
     for (let i = 0; i < 10; ++i) {
       const sig = keypair.sign(message)
       const valid = keypair.verify(message, sig)
-      const enc = SignatureIO.encode({d: sig})
-      console.log(enc, valid)
+      console.log(sig, valid)
     }
   });
 })
