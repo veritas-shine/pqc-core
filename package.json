@@ -12,7 +12,8 @@
     "prepublish": "cross-env NODE_ENV=production npm run build",
     "test-base": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/*.js",
     "test-block": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/block.js",
-    "test-tx": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction.js"
+    "test-tx": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/transaction.js",
+    "test-keypair": "NODE_PATH=./src mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --reporter spec test/keypair.js"
   },
   "repository": {
     "type": "git",
@@ -30,12 +31,12 @@
     "bn.js": "^4.11.8",
     "buffer-compare": "^1.1.1",
     "cubehash": "^1.1.0",
+    "glyph-js": "0.0.1",
     "jison": "^0.4.18",
     "lodash": "^4.17.4",
     "merkle-lib": "^2.0.10",
     "protobufjs": "^6.8.6",
-    "tweetnacl": "^1.0.0",
-    "xmss": "0.0.11"
+    "tweetnacl": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
