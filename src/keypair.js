@@ -61,6 +61,15 @@ export default class Keypair {
   /**
    *
    * @param message {Buffer}
+   * @param privateKey {Buffer}
+   * @return {Buffer}
+   */
+  static sign(message, privateKey) {
+    return GLYPH.sign(message, privateKey)
+  }
+  /**
+   *
+   * @param message {Buffer}
    * @param signature {Buffer}
    * @return {Boolean}
    */

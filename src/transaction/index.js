@@ -1,3 +1,4 @@
+
 import Hash from '../hash'
 import Input from './input'
 import Output from './output'
@@ -114,3 +115,6 @@ export default class Transaction {
       .toString('hex')} >`
   }
 }
+
+Transaction.Input = Input
+Transaction.Output = Output

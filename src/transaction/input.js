@@ -72,6 +72,16 @@ export default class TransactionInput {
   }
 
   /**
+   * create buffer from prevTxID & outIndex, to be used in signature
+   * @param prevTxID {Buffer | String}
+   * @param outIndex {Number}
+   */
+  static createMessageForSign(prevTxID, outIndex) {
+    prevTxID = BufferUtil.ensureBuffer(prevTxID)
+    const ob = Buffer.from(outIndex.toString(16), 'hex')
+    return Buffer.concat([prevTxID, ob])
+  }
+  /**
    *
    * @param publicKeyHash {Buffer}
    * @return {Boolean}
@@ -79,8 +89,7 @@ export default class TransactionInput {
   verify(publicKeyHash) {
     publicKeyHash = BufferUtil.ensureBuffer(publicKeyHash)
     if (!TransactionInput.isCoinbase(this.prevTxID)) {
-      const ob = Buffer.from(this.outIndex.toString(16), 'hex')
-      const msg = Buffer.concat([this.prevTxID, ob])
+      const msg = TransactionInput.createMessageForSign(this.prevTxID, this.outIndex)
       return (Hash.defaultHash(this.publicKey).equals(publicKeyHash)
         && Keypair.verifyMessage(msg, this.signature, this.publicKey))
     }
