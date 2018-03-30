@@ -8,6 +8,10 @@ const {base58check, BufferUtil} = encoding
 export default class Keypair {
   static addressHashFunction = Hash.sha256ripemd160
 
+  /**
+   * create keypair from secret (seed) & network
+   * @param options {{secret: String, network: String}}
+   */
   constructor(options) {
     let { secret, network = Network.default } = options
     secret = BufferUtil.ensureBuffer(secret)
@@ -20,10 +24,15 @@ export default class Keypair {
 
   }
 
+  /**
+   * buffer of privateKey
+   * @return {Buffer}
+   */
   privateKey() {
     return this.pair.private
   }
   /**
+   * buffer of publicKey
    * @return {Buffer}
    */
   publicKey() {
@@ -31,6 +40,7 @@ export default class Keypair {
   }
 
   /**
+   * convert publicKey to address, network magic prefix added
    * @return {String}
    */
   toAddress() {
@@ -41,7 +51,7 @@ export default class Keypair {
   }
 
   /**
-   *
+   * decode publicKey hash from address
    * @param address {String}
    */
   static addressToPublicKeyHash(address) {
@@ -50,7 +60,7 @@ export default class Keypair {
   }
 
   /**
-   *
+   * create a signature of a `message` with privateKey
    * @param message {Buffer}
    * @return {Buffer}
    */
@@ -59,7 +69,8 @@ export default class Keypair {
   }
 
   /**
-   *
+   * create a signature of a `message` with privateKey
+   * static method version
    * @param message {Buffer}
    * @param privateKey {Buffer}
    * @return {Buffer}
@@ -68,7 +79,7 @@ export default class Keypair {
     return GLYPH.sign(message, privateKey)
   }
   /**
-   *
+   * verify if the signature & message match
    * @param message {Buffer}
    * @param signature {Buffer}
    * @return {Boolean}
@@ -78,7 +89,8 @@ export default class Keypair {
   }
 
   /**
-   *
+   * verify if the signature & message match
+   * static method version
    * @param message {Buffer}
    * @param signature {Buffer}
    * @param publicKey {Buffer}

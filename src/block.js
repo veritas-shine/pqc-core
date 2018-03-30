@@ -49,7 +49,7 @@ export default class Block {
   }
 
   /**
-   *
+   * create block from protobuf encoded Buffer
    * @param buffer {Buffer}
    */
   static fromBuffer(buffer) {
@@ -58,6 +58,7 @@ export default class Block {
   }
 
   /**
+   * encode Block to Buffer by protobuf
    * @return {Buffer}
    */
   toBuffer() {
@@ -66,6 +67,7 @@ export default class Block {
   }
 
   /**
+   * convert to JSON formated Object
    * @return {Object}
    */
   toJSON() {
@@ -84,6 +86,7 @@ export default class Block {
   }
 
   /**
+   * hex string of protobuf encoded buffer
    * @return {String}
    */
   toString() {
@@ -92,7 +95,7 @@ export default class Block {
   }
 
   /**
-   *
+   * hash of this Block
    * @return {Buffer}
    */
   hash() {

@@ -27,10 +27,19 @@ export default class TransactionOutput {
     return obj
   }
 
+  /**
+   * encoded to protobuf Buffer
+   * @return {Buffer}
+   */
   toBuffer() {
     return TXOutput.encode(this).finish()
   }
 
+  /**
+   * create from protobuf encoded Buffer
+   * @param buffer
+   * @return {TransactionOutput}
+   */
   static fromBuffer(buffer) {
     const obj = TXOutput.decode(buffer)
     return new TransactionOutput(obj)

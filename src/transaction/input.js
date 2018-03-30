@@ -32,12 +32,23 @@ export default class TransactionInput {
     return txID.toString('hex') === Consensus.TX.coinbase.HASH
   }
 
+  /**
+   * create a signature of prevTxID & outIndex
+   * @param prevTxID {Buffer | String}
+   * @param outIndex {Number}
+   * @param keypair {Keypair}
+   * @return {Buffer}
+   */
   static createSignature(prevTxID, outIndex, keypair) {
-    const ob = Encoding.numberToBuffer(outIndex, 8)
-    const buffer = Buffer.concat([prevTxID, ob])
+    const buffer = TransactionInput.createMessageForSign(prevTxID, outIndex)
     return keypair.sign(buffer)
   }
 
+  /**
+   * create from JSON object
+   * @param obj
+   * @return {TransactionInput}
+   */
   static fromJSON(obj) {
     if (obj instanceof TransactionInput) {
       return obj
@@ -45,6 +56,10 @@ export default class TransactionInput {
     return new TransactionInput(obj)
   }
 
+  /**
+   * convert to JSON Object
+   * @return {{prevTxID: string, outIndex: Number, signature: string}}
+   */
   toJSON() {
     const obj = {
       prevTxID: this.prevTxID.toString('hex'),
@@ -58,7 +73,7 @@ export default class TransactionInput {
   }
 
   /**
-   *
+   * encoded to protobuf Buffer
    * @return {Buffer}
    */
   toBuffer() {
@@ -66,6 +81,11 @@ export default class TransactionInput {
       .finish()
   }
 
+  /**
+   * create Input from a protobuf encoded Buffer
+   * @param buffer {Buffer}
+   * @return {TransactionInput}
+   */
   static fromBuffer(buffer) {
     const obj = TXInput.decode(buffer)
     return new TransactionInput(obj)
@@ -82,7 +102,7 @@ export default class TransactionInput {
     return Buffer.concat([prevTxID, ob])
   }
   /**
-   *
+   * verify if the given hash of publicKey match the signature & publicKey
    * @param publicKeyHash {Buffer}
    * @return {Boolean}
    */

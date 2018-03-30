@@ -6,11 +6,13 @@ const { BufferUtil } = Encoding
 
 export default class Hash {
   /**
+   * placeholder hash for sha256, used in Block & Transaction
    * @type {string}
    */
   static NULL = '0000000000000000000000000000000000000000000000000000000000000000'
 
   /**
+   * standard sha512 hash function
    * @param buffer {Buffer}
    * @return {Buffer}
    */
@@ -20,7 +22,7 @@ export default class Hash {
   }
 
   /**
-   *
+   * standard sha256 hash function
    * @param buffer {Buffer}
    * @return {Buffer}
    */
@@ -29,6 +31,11 @@ export default class Hash {
     return crypto.createHash('sha256').update(buffer).digest()
   }
 
+  /**
+   * twice sha256 hash
+   * @param buffer {Buffer}
+   * @return {Buffer}
+   */
   static sha256sha256(buffer) {
     buffer = BufferUtil.ensureBuffer(buffer)
     return Hash.sha256(Hash.sha256(buffer))
@@ -45,7 +52,7 @@ export default class Hash {
   }
 
   /**
-   *
+   * combined ripemd160 & sha256 hash function
    * @param buffer {Buffer}
    * @return {Buffer}
    */
@@ -60,7 +67,7 @@ export default class Hash {
   }
 
   /**
-   *
+   * default hash function to create transaction id ... etc
    */
   static defaultHash = Hash.sha256sha256
 }

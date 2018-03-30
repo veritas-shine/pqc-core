@@ -5,10 +5,16 @@ export default {
     maxNonce: 0xFFFFFFFF
   },
   TX: {
+    /**
+     * transaction type enums
+     */
     type: {
       Normal: 0x001,
       Payload: 0x002
     },
+    /**
+     * coinbase parameters
+     */
     coinbase: {
       HASH: Hash.NULL,
       Sequence: 0xFFFFFFFF,
