@@ -17,7 +17,7 @@ export default class Keypair {
     secret = BufferUtil.ensureBuffer(secret)
 
     this.network = Network[network]
-    this.pair = GLYPH.createKey(secret)
+    this.pair = new GLYPH(secret)
   }
 
   static fromBuffer() {
@@ -29,14 +29,14 @@ export default class Keypair {
    * @return {Buffer}
    */
   privateKey() {
-    return this.pair.private
+    return this.pair.privateKey()
   }
   /**
    * buffer of publicKey
    * @return {Buffer}
    */
   publicKey() {
-    return this.pair.public
+    return this.pair.publicKey()
   }
 
   /**
@@ -65,7 +65,7 @@ export default class Keypair {
    * @return {Buffer}
    */
   sign(message) {
-    return GLYPH.sign(message, this.privateKey())
+    return this.pair.sign(message)
   }
 
   /**
