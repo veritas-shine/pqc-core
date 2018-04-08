@@ -24,6 +24,17 @@ export default class Transaction {
   }
 
   /**
+   * @return {Boolean}
+   */
+  isCoinbase() {
+    if (this.inputs.length === 1) {
+      const input = this.inputs[0]
+      return Input.isCoinbase(input.prevTxID)
+    }
+    return false
+  }
+
+  /**
    * create a coinbase transaction
    * @param keypair {Keypair}
    * @param coinbase {Buffer}
