@@ -58,7 +58,7 @@ export default class Hash {
    */
   static sha256ripemd160(buffer) {
     buffer = BufferUtil.ensureBuffer(buffer)
-    return Hash.sha256(Hash.ripemd160(buffer))
+    return Hash.ripemd160(Hash.sha256(buffer))
   }
 
   static cube256(buffer) {
