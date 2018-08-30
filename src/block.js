@@ -11,11 +11,15 @@ function sha256cube256(buffer) {
   return Hash.sha256(Hash.cube256(buffer))
 }
 
+/**
+ * @class Block
+ */
 export default class Block {
 
-  static hashFunction = sha256cube256
-  static invalidNonce = -1
-
+  /**
+   * @constructor
+   * @param {Object} obj
+   */
   constructor(obj) {
     this.height = obj.height
 
@@ -50,7 +54,7 @@ export default class Block {
 
   /**
    * create block from protobuf encoded Buffer
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    */
   static fromBuffer(buffer) {
     const obj = IO.Block.decode(buffer)
@@ -87,7 +91,7 @@ export default class Block {
 
   /**
    * hex string of protobuf encoded buffer
-   * @return {String}
+   * @return {string}
    */
   toString() {
     return this.toBuffer()
@@ -112,7 +116,9 @@ export default class Block {
    * @return {Buffer}
    */
   static concatBuffer(blockTemplate) {
-    const {version, prevHash, merkleRoot, time, qbits, nonce} = blockTemplate
+    const {
+      version, prevHash, merkleRoot, time, qbits, nonce
+    } = blockTemplate
     // Create little-endian long int (4 bytes) with the version (2) on the first byte
     const versionBuffer = Buffer.alloc(4);
     versionBuffer.writeInt32LE(version, 0);
@@ -134,7 +140,7 @@ export default class Block {
 
   /**
    * get target buffer from qbits
-   * @param bits {Number}
+   * @param {number} bits
    * @return {Buffer}
    */
   static bitsToTargetBuffer(bits) {
@@ -164,3 +170,7 @@ export default class Block {
     return Block.invalidNonce
   }
 }
+
+Block.hashFunction = sha256cube256
+
+Block.invalidNonce = -1

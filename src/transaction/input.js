@@ -13,7 +13,9 @@ export default class TransactionInput {
    * @param obj {Object}
    */
   constructor(obj) {
-    const {prevTxID, outIndex, signature, publicKey} = obj
+    const {
+      prevTxID, outIndex, signature, publicKey
+    } = obj
     if (!prevTxID || TransactionInput.isCoinbase(prevTxID)) {
       this.prevTxID = BufferUtil.ensureBuffer(Consensus.TX.coinbase.HASH)
       this.outIndex = Consensus.TX.coinbase.Sequence
@@ -26,7 +28,7 @@ export default class TransactionInput {
   }
 
   /** check if txID is a coinbase
-   * @return {Boolean}
+   * @return {boolean}
    */
   static isCoinbase(txID) {
     return txID.toString('hex') === Consensus.TX.coinbase.HASH
@@ -34,9 +36,9 @@ export default class TransactionInput {
 
   /**
    * create a signature of prevTxID & outIndex
-   * @param prevTxID {Buffer | String}
-   * @param outIndex {Number}
-   * @param keypair {Keypair}
+   * @param {Buffer | string} prevTxID
+   * @param {number} outIndex
+   * @param {Keypair} keypair
    * @return {Buffer}
    */
   static createSignature(prevTxID, outIndex, keypair) {
@@ -77,13 +79,12 @@ export default class TransactionInput {
    * @return {Buffer}
    */
   toBuffer() {
-    return TXInput.encode(this)
-      .finish()
+    return TXInput.encode(this).finish()
   }
 
   /**
    * create Input from a protobuf encoded Buffer
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {TransactionInput}
    */
   static fromBuffer(buffer) {
@@ -93,18 +94,19 @@ export default class TransactionInput {
 
   /**
    * create buffer from prevTxID & outIndex, to be used in signature
-   * @param prevTxID {Buffer | String}
-   * @param outIndex {Number}
+   * @param {Buffer | string} prevTxID
+   * @param {number} outIndex
    */
   static createMessageForSign(prevTxID, outIndex) {
     prevTxID = BufferUtil.ensureBuffer(prevTxID)
     const ob = Buffer.from(outIndex.toString(16), 'hex')
     return Buffer.concat([prevTxID, ob])
   }
+
   /**
    * verify if the given hash of publicKey match the signature & publicKey
-   * @param publicKeyHash {Buffer}
-   * @return {Boolean}
+   * @param {Buffer} publicKeyHash
+   * @return {boolean}
    */
   verify(publicKeyHash) {
     publicKeyHash = BufferUtil.ensureBuffer(publicKeyHash)

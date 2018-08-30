@@ -8,7 +8,14 @@ import IO from '../io'
 
 const {TX} = IO
 
+/**
+ * @class Transaction
+ */
 export default class Transaction {
+  /**
+   * @constructor
+   * @param obj
+   */
   constructor(obj) {
     this.type = Consensus.TX.type.Normal
     this.version = obj.version
@@ -24,7 +31,7 @@ export default class Transaction {
   }
 
   /**
-   * @return {Boolean}
+   * @return {boolean}
    */
   isCoinbase() {
     if (this.inputs.length === 1) {
@@ -38,7 +45,7 @@ export default class Transaction {
    * create a coinbase transaction
    * @param keypair {Keypair}
    * @param coinbase {Buffer}
-   * @param amount {Number}
+   * @param amount {number}
    * @return {Transaction}
    */
   static createCoinbaseTransaction(keypair, coinbase, amount) {
@@ -78,7 +85,7 @@ export default class Transaction {
   }
 
   /**
-   * @return {String}
+   * @return {string}
    */
   toString() {
     return this.toBuffer()

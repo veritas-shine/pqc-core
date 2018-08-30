@@ -4,16 +4,13 @@ import Encoding from './encoding'
 
 const { BufferUtil } = Encoding
 
+/**
+ * @class Hash
+ */
 export default class Hash {
   /**
-   * placeholder hash for sha256, used in Block & Transaction
-   * @type {string}
-   */
-  static NULL = '0000000000000000000000000000000000000000000000000000000000000000'
-
-  /**
    * standard sha512 hash function
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {Buffer}
    */
   static sha512(buffer) {
@@ -23,7 +20,7 @@ export default class Hash {
 
   /**
    * standard sha256 hash function
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {Buffer}
    */
   static sha256(buffer) {
@@ -33,7 +30,7 @@ export default class Hash {
 
   /**
    * twice sha256 hash
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {Buffer}
    */
   static sha256sha256(buffer) {
@@ -43,7 +40,7 @@ export default class Hash {
 
   /**
    *
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {Buffer}
    */
   static ripemd160(buffer) {
@@ -53,7 +50,7 @@ export default class Hash {
 
   /**
    * combined ripemd160 & sha256 hash function
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {Buffer}
    */
   static sha256ripemd160(buffer) {
@@ -61,13 +58,26 @@ export default class Hash {
     return Hash.ripemd160(Hash.sha256(buffer))
   }
 
+  /**
+   *
+   * @param {Buffer} buffer
+   * @return {Buffer}
+   */
   static cube256(buffer) {
     buffer = BufferUtil.ensureBuffer(buffer)
     return cubehash(256, buffer)
   }
-
-  /**
-   * default hash function to create transaction id ... etc
-   */
-  static defaultHash = Hash.sha256sha256
 }
+
+/**
+ * placeholder hash for sha256, used in Block & Transaction
+ * @type {string} NULL
+ */
+Hash.NULL = '0000000000000000000000000000000000000000000000000000000000000000'
+
+
+/**
+ * default hash function to create transaction id ... etc
+ * @type {function}
+ */
+Hash.defaultHash = Hash.sha256sha256

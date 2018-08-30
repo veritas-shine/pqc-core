@@ -25,7 +25,7 @@ const BufferUtil = {
 const base58check = {
   /**
    * encode buffer into base58 format, added 4-length checksum
-   * @param buffer {Buffer}
+   * @param {Buffer} buffer
    * @return {string}
    */
   encode: (buffer) => {
@@ -56,8 +56,8 @@ const base58check = {
 /**
  * convert number to Buffer, if gived `fixedLength`, returned Buffer will
  * be padded to `fixedLength`
- * @param number {Number}
- * @param fixedLength {Number}
+ * @param {number} number
+ * @param {number} fixedLength
  * @return {Buffer}
  */
 function numberToBuffer(number, fixedLength) {
@@ -77,7 +77,7 @@ function numberToBuffer(number, fixedLength) {
 
 /**
  * convert int32 number to Buffer
- * @param number {Number}
+ * @param {number} number
  * @return {Buffer}
  */
 function int32ToBuffer(number) {

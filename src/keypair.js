@@ -6,11 +6,9 @@ import Hash from './hash'
 const {base58check, BufferUtil} = encoding
 
 export default class Keypair {
-  static addressHashFunction = Hash.sha256ripemd160
-
   /**
    * create keypair from secret (seed) & network
-   * @param options {{secret: String, network: String}}
+   * @param {{secret: string, network: string}} options
    */
   constructor(options) {
     let { secret, network = Network.default } = options
@@ -31,6 +29,7 @@ export default class Keypair {
   privateKey() {
     return this.pair.privateKey()
   }
+
   /**
    * buffer of publicKey
    * @return {Buffer}
@@ -41,7 +40,7 @@ export default class Keypair {
 
   /**
    * convert publicKey to address, network magic prefix added
-   * @return {String}
+   * @return {string}
    */
   toAddress() {
     let buffer = Keypair.addressHashFunction(this.publicKey())
@@ -52,7 +51,7 @@ export default class Keypair {
 
   /**
    * decode publicKey hash from address
-   * @param address {String}
+   * @param {string} address
    */
   static addressToPublicKeyHash(address) {
     const buffer = base58check.decode(address)
@@ -78,11 +77,12 @@ export default class Keypair {
   static sign(message, privateKey) {
     return GLYPH.sign(message, privateKey)
   }
+
   /**
    * verify if the signature & message match
    * @param message {Buffer}
    * @param signature {Buffer}
-   * @return {Boolean}
+   * @return {boolean}
    */
   verify(message, signature) {
     return GLYPH.verify(signature, message, this.publicKey())
@@ -99,3 +99,5 @@ export default class Keypair {
     return GLYPH.verify(signature, message, publicKey)
   }
 }
+
+Keypair.addressHashFunction = Hash.sha256ripemd160

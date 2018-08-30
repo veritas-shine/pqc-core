@@ -1,5 +1,8 @@
 import Hash from './hash'
 
+/**
+ * consensus
+ */
 export default {
   Block: {
     maxNonce: 0xFFFFFFFF
