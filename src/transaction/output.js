@@ -19,6 +19,10 @@ export default class TransactionOutput {
     return new TransactionOutput(amount, publicKeyHash)
   }
 
+  /**
+   *
+   * @return {{amount: number, publicKeyHash: string}}
+   */
   toJSON() {
     const obj = {
       amount: this.amount,
@@ -27,19 +31,36 @@ export default class TransactionOutput {
     return obj
   }
 
+  /**
+   * encoded to protobuf Buffer
+   * @return {Buffer}
+   */
   toBuffer() {
     return TXOutput.encode(this).finish()
   }
 
+  /**
+   * create from protobuf encoded Buffer
+   * @param {Buffer} buffer
+   * @return {TransactionOutput}
+   */
   static fromBuffer(buffer) {
     const obj = TXOutput.decode(buffer)
     return new TransactionOutput(obj)
   }
 
+  /**
+   *
+   * @return {string}
+   */
   hash() {
     return Hash.defaultHash(this.toBuffer())
   }
 
+  /**
+   *
+   * @return {string}
+   */
   inspect() {
     return `<Output ${this.hash().toString('hex')} ${this.amount} ${this.publicKeyHash.toString('hex')}>`
   }

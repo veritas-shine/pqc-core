@@ -1,3 +1,4 @@
+
 import Hash from '../hash'
 import Input from './input'
 import Output from './output'
@@ -7,7 +8,14 @@ import IO from '../io'
 
 const {TX} = IO
 
+/**
+ * @class Transaction
+ */
 export default class Transaction {
+  /**
+   * @constructor
+   * @param obj
+   */
   constructor(obj) {
     this.type = Consensus.TX.type.Normal
     this.version = obj.version
@@ -23,10 +31,21 @@ export default class Transaction {
   }
 
   /**
+   * @return {boolean}
+   */
+  isCoinbase() {
+    if (this.inputs.length === 1) {
+      const input = this.inputs[0]
+      return Input.isCoinbase(input.prevTxID)
+    }
+    return false
+  }
+
+  /**
    * create a coinbase transaction
    * @param keypair {Keypair}
    * @param coinbase {Buffer}
-   * @param amount {Number}
+   * @param amount {number}
    * @return {Transaction}
    */
   static createCoinbaseTransaction(keypair, coinbase, amount) {
@@ -66,7 +85,7 @@ export default class Transaction {
   }
 
   /**
-   * @return {String}
+   * @return {string}
    */
   toString() {
     return this.toBuffer()
@@ -114,3 +133,6 @@ export default class Transaction {
       .toString('hex')} >`
   }
 }
+
+Transaction.Input = Input
+Transaction.Output = Output

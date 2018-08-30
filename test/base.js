@@ -12,10 +12,4 @@ describe('encoding', () => {
     const b = base58check.encode(buf)
     console.log(a, b, ba.length, buf.length)
   })
-
-  it('should create buffer', function () {
-    const b = Buffer.from([0x30, 0x31])
-    const b1 = Buffer.from(new Uint32Array(19999999999999))
-    console.log(b, b.reverse(), b1)
-  });
 })

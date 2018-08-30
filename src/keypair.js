@@ -1,4 +1,4 @@
-import xmss from 'xmss'
+import GLYPH from 'glyph-js'
 import Network from './network'
 import encoding from './encoding'
 import Hash from './hash'
@@ -6,32 +6,41 @@ import Hash from './hash'
 const {base58check, BufferUtil} = encoding
 
 export default class Keypair {
-  static addressHashFunction = Hash.sha256ripemd160
-
+  /**
+   * create keypair from secret (seed) & network
+   * @param {{secret: string, network: string}} options
+   */
   constructor(options) {
     let { secret, network = Network.default } = options
     secret = BufferUtil.ensureBuffer(secret)
-    const seed = BufferUtil.bufferToVector(secret.slice(0, 48))
+
     this.network = Network[network]
-    this.pair = new xmss.Xmss(seed, 4)
+    this.pair = new GLYPH(secret)
   }
 
   static fromBuffer() {
 
   }
 
-  privateKey() {
-    return BufferUtil.vectorToBuffer(this.pair.getSK())
-  }
   /**
+   * buffer of privateKey
    * @return {Buffer}
    */
-  publicKey() {
-    return BufferUtil.vectorToBuffer(this.pair.getPK())
+  privateKey() {
+    return this.pair.privateKey()
   }
 
   /**
-   * @return {String}
+   * buffer of publicKey
+   * @return {Buffer}
+   */
+  publicKey() {
+    return this.pair.publicKey()
+  }
+
+  /**
+   * convert publicKey to address, network magic prefix added
+   * @return {string}
    */
   toAddress() {
     let buffer = Keypair.addressHashFunction(this.publicKey())
@@ -41,8 +50,8 @@ export default class Keypair {
   }
 
   /**
-   *
-   * @param address {String}
+   * decode publicKey hash from address
+   * @param {string} address
    */
   static addressToPublicKeyHash(address) {
     const buffer = base58check.decode(address)
@@ -50,25 +59,45 @@ export default class Keypair {
   }
 
   /**
-   *
+   * create a signature of a `message` with privateKey
    * @param message {Buffer}
    * @return {Buffer}
    */
   sign(message) {
-    const vector = BufferUtil.bufferToVector(message)
-    const ret = this.pair.sign(vector)
-    return BufferUtil.vectorToBuffer(ret)
+    return this.pair.sign(message)
   }
 
   /**
-   *
+   * create a signature of a `message` with privateKey
+   * static method version
+   * @param message {Buffer}
+   * @param privateKey {Buffer}
+   * @return {Buffer}
+   */
+  static sign(message, privateKey) {
+    return GLYPH.sign(message, privateKey)
+  }
+
+  /**
+   * verify if the signature & message match
    * @param message {Buffer}
    * @param signature {Buffer}
-   * @return {Boolean}
+   * @return {boolean}
    */
   verify(message, signature) {
-    const mv = BufferUtil.bufferToVector(message)
-    const sv = BufferUtil.bufferToVector(signature)
-    return xmss.Xmss.verify(mv, sv, this.pair.getPK())
+    return GLYPH.verify(signature, message, this.publicKey())
+  }
+
+  /**
+   * verify if the signature & message match
+   * static method version
+   * @param message {Buffer}
+   * @param signature {Buffer}
+   * @param publicKey {Buffer}
+   */
+  static verifyMessage(message, signature, publicKey) {
+    return GLYPH.verify(signature, message, publicKey)
   }
 }
+
+Keypair.addressHashFunction = Hash.sha256ripemd160

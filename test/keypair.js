@@ -1,6 +1,16 @@
 import pqccore from '../src'
+import protobuf from 'protobufjs/light'
 
 const { Keypair, Network, Hash } = pqccore
+const {Field} = protobuf
+
+function SignatureIO(properties) {
+  protobuf.Message.call(this, properties)
+}
+
+(SignatureIO.prototype = Object.create(protobuf.Message)).constructor = SignatureIO
+
+Field.d(1, 'bytes')(SignatureIO.prototype, 'd')
 
 describe('Keypair', () => {
   const secret = Hash.sha512('glv')

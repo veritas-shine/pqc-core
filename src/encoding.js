@@ -1,28 +1,16 @@
 import bx from 'base-x'
-import xmss from 'xmss'
 import Hash from './hash'
 
 const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const base58 = bx(BASE58)
 
 const BufferUtil = {
-  bufferToVector: (buffer) => {
-    const ret = new xmss.VectorUChar()
-    for (let i = 0; i < buffer.length; i++) {
-      // Put some data
-      ret.push_back(buffer[i])
-    }
-    return ret
-  },
-  vectorToBuffer: (vector) => {
-    const size = vector.size()
-    const buffer = Buffer.alloc(size)
-    for (let i = 0; i < size; i++) {
-      // Put some data
-      buffer[i] = vector.get(i)
-    }
-    return buffer
-  },
+  /**
+   * make sure obj can be converted to Buffer, or will throw an error
+   * @param obj {*}
+   * @return {Buffer}
+   * @throws {Error}
+   */
   ensureBuffer: (obj) => {
     if (Buffer.isBuffer(obj) || obj instanceof Uint8Array) {
       return obj
@@ -35,12 +23,23 @@ const BufferUtil = {
 }
 
 const base58check = {
+  /**
+   * encode buffer into base58 format, added 4-length checksum
+   * @param {Buffer} buffer
+   * @return {string}
+   */
   encode: (buffer) => {
     buffer = BufferUtil.ensureBuffer(buffer)
     let hash = Hash.sha256sha256(buffer).slice(0, 4)
     hash = Buffer.concat([buffer, hash])
     return base58.encode(hash)
   },
+  /**
+   * decode base58 encoded string to Buffer, with checksum checked
+   * @param string
+   * @return {Buffer}
+   * @throws {Error}
+   */
   decode: (string) => {
     const buffer = base58.decode(string)
     const length = buffer.length
@@ -54,6 +53,13 @@ const base58check = {
   }
 }
 
+/**
+ * convert number to Buffer, if gived `fixedLength`, returned Buffer will
+ * be padded to `fixedLength`
+ * @param {number} number
+ * @param {number} fixedLength
+ * @return {Buffer}
+ */
 function numberToBuffer(number, fixedLength) {
   let str = number.toString(16)
   if (str.length / 2 === 1) {
@@ -69,6 +75,11 @@ function numberToBuffer(number, fixedLength) {
   return Buffer.from(str, 'hex')
 }
 
+/**
+ * convert int32 number to Buffer
+ * @param {number} number
+ * @return {Buffer}
+ */
 function int32ToBuffer(number) {
   const b = Buffer.alloc(4)
   b.writeInt32LE(number)
